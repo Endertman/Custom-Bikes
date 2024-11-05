@@ -4,14 +4,51 @@ import sqlite3
 conexion = sqlite3.connect('custom_bikes.db')
 cursor = conexion.cursor()
 
-cursor.execute('SELECT * FROM cliente')
-clientes = cursor.fetchall()  # Obtiene todos los registros
+def borrar_db():
+    cursor.execute('''CREATE DATABASE custom_bikes''')
+    
+def crear_db():
+    cursor.execute('''CREATE DATABASE custom_bikes''')
 
-for cliente in clientes:
-    print(cliente)
+def crear_tabla_personas():
+    cursor.execute('''CREATE TABLE IF NOT EXISTS personas (
+    	`rut_id` TEXT NOT NULL UNIQUE,
+	    `nombre` TEXT NOT NULL,
+	    `apellido` TEXT NOT NULL,
+	    `telefono` INTEGER NOT NULL,
+	    `correo` TEXT NOT NULL,
+	    `direccion` TEXT NOT NULL,
+	    PRIMARY KEY(`rut_id`)
+    )''')
 
-cursor.execute('SELECT * FROM almacen')
-almacen = cursor.fetchall()  # Obtiene todos los registros
+def crear_tabla_cliente():
+    cursor.execute('''CREATE TABLE IF NOT EXISTS cliente (
+    	`rut_id` TEXT NOT NULL UNIQUE,
+	    `altura` INTEGER NOT NULL,
+	    FOREIGN KEY(`rut_id`) REFERENCES `personas`(`rut_id`)
+    )''')
 
-for componente in almacen:
-    print(componente)
+def crear_tabla_tecnico():
+    cursor.execute('''CREATE TABLE IF NOT EXISTS tecnico (
+    	`rut_id` TEXT NOT NULL UNIQUE,
+	    `especialidad` TEXT NOT NULL,
+	    FOREIGN KEY(`rut_id`) REFERENCES `personas`(`rut_id`)
+    )''')
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+def personas(rut_id, nombre, apellido, telefono, correo, direccion):
+    cursor.execute('''INSERT INTO personas (rut_id, nombre, apellido, telefono, correo, direccion) VALUES (?, ?, ?, ?, ?, ?)''', (rut_id, nombre, apellido, telefono, correo, direccion))
+    conexion.commit()
+    print("Persona agregada exitosamente.")

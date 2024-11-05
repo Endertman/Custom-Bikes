@@ -1,0 +1,7 @@
+id_pedido,fecha_inicio,fecha_fin,cobertura,condiciones,estado
+1,2024-10-01,2025-10-01,1 año de garantía,Cubre defectos de fabricación,Activo
+2,2024-10-05,2025-10-05,1 año de garantía,Cubre defectos de fabricación,Activo
+3,2024-10-10,2025-10-10,1 año de garantía,Cubre defectos de fabricación,Activo
+4,2024-10-15,2025-10-15,1 año de garantía,Cubre defectos de fabricación,Activo
+5,2024-10-20,2025-10-20,1 año de garantía,Cubre defectos de fabricación,Activo
+6,2024-10-25,2025-10-25,1 año de garantía,Cubre defectos de fabricación,Activo
