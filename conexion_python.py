@@ -46,13 +46,6 @@ def personas(rut_id, nombre, apellido, telefono, correo, direccion):
 # Aqui vamos a ejecutar todo el programa
 cursor.execute("DROP DATABASE")
 
-# el angel es weko
-
-
-
-
-
-#hola angel
 
 
 
