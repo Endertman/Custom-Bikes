@@ -35,13 +35,6 @@ def crear_tabla_tecnico():
 	    FOREIGN KEY(`rut_id`) REFERENCES `personas`(`rut_id`)
     )''')
  
-crear_db()
-
-
-
-
-
-
 
 
 # funciones para agregar personas
@@ -49,3 +42,38 @@ def personas(rut_id, nombre, apellido, telefono, correo, direccion):
     cursor.execute('''INSERT INTO personas (rut_id, nombre, apellido, telefono, correo, direccion) VALUES (?, ?, ?, ?, ?, ?)''', (rut_id, nombre, apellido, telefono, correo, direccion))
     conexion.commit()
     print("Persona agregada exitosamente.")
+    
+# Aqui vamos a ejecutar todo el programa
+cursor.execute("DROP DATABASE")
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+#funciones para insertar datos
+def almacen():
+    cursor.execute('''INSERT INTO almacen (sku,nombre,categoria,tipo,descuento_individual,stock,precio) VALUES ('SKU_R001','Marco Ruta Carbono','Ruta','Marco',10,20,100), ();''')
+    conexion.commit()
+    print("Componente agregada exitosamente.")
