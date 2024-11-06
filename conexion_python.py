@@ -5,7 +5,7 @@ conexion = sqlite3.connect('custom_bikes.db')
 cursor = conexion.cursor()
 
 def borrar_db():
-    cursor.execute('''CREATE DATABASE custom_bikes''')
+    cursor.execute('''DROP DATABASE custom_bikes''')
     
 def crear_db():
     cursor.execute('''CREATE DATABASE custom_bikes''')
@@ -35,10 +35,7 @@ def crear_tabla_tecnico():
 	    FOREIGN KEY(`rut_id`) REFERENCES `personas`(`rut_id`)
     )''')
  
-
-
-
-
+crear_db()
 
 
 
