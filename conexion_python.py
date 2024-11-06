@@ -38,14 +38,45 @@ def crear_tabla_tecnico():
 crear_db()
 
 
-
-
-
-
-
-
 # funciones para agregar personas
 def personas(rut_id, nombre, apellido, telefono, correo, direccion):
     cursor.execute('''INSERT INTO personas (rut_id, nombre, apellido, telefono, correo, direccion) VALUES (?, ?, ?, ?, ?, ?)''', (rut_id, nombre, apellido, telefono, correo, direccion))
     conexion.commit()
     print("Persona agregada exitosamente.")
+    
+# Aqui vamos a ejecutar todo el programa
+cursor.execute("DROP DATABASE")
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+#Endert chupalo
