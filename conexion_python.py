@@ -47,7 +47,7 @@ def crear_tabla_tecnico():
 
 
 
-
+# funciones para agregar personas
 def personas(rut_id, nombre, apellido, telefono, correo, direccion):
     cursor.execute('''INSERT INTO personas (rut_id, nombre, apellido, telefono, correo, direccion) VALUES (?, ?, ?, ?, ?, ?)''', (rut_id, nombre, apellido, telefono, correo, direccion))
     conexion.commit()
