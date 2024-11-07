@@ -1,5 +1,5 @@
 sku,nombre,categoria,tipo,descuento_individual,stock,precio
-SKU_R001,Marco Ruta Carbono,Ruta,Marco,10,20,100
+'SKU_R001','Marco Ruta Carbono','Ruta','Marco',10,20,100
 SKU_R002,Marco Ruta Aluminio,Ruta,Marco,5,15,100
 SKU_R003,Marco Ruta Titanio,Ruta,Marco,0,5,100
 SKU_R004,Transmisión Ruta Shimano,Ruta,Transmisión,15,30,100

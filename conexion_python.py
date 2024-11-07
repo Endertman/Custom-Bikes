@@ -72,4 +72,8 @@ cursor.execute("DROP DATABASE")
 
 
 
-#Endert chupalo
+#funciones para insertar datos
+def almacen():
+    cursor.execute('''INSERT INTO almacen (sku,nombre,categoria,tipo,descuento_individual,stock,precio) VALUES ('SKU_R001','Marco Ruta Carbono','Ruta','Marco',10,20,100), ();''')
+    conexion.commit()
+    print("Componente agregada exitosamente.")
