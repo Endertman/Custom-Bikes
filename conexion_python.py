@@ -166,4 +166,3 @@ def crear_db():
     conn.close()
 
 crear_db()
-
