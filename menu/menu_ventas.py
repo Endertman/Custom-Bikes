@@ -8,7 +8,7 @@ def menu_ventas():
     print('5. Mostrar ventas')
     print('6. Volver al menú principal')
 
-    seleccion = input('Seleccione una opción: ')
+    seleccion = int(input('Seleccione una opción: '))
 
     if seleccion == 1:
         print('Agregar venta')

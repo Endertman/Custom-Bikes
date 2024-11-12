@@ -1,3 +1,8 @@
+from menu_ventas import menu_ventas
+from menu_garantias import menu_garantias
+from menu_empleados import menu_empleados
+from menu_stock import menu_stock
+
 def menu_principal():
     seleccion = 0
 
@@ -6,7 +11,7 @@ def menu_principal():
     print('3. Empleados')
     print('4. Stock')
 
-    seleccion = input('Seleccione una opción: ')
+    seleccion = int(input('Seleccione una opción: '))
     
     if seleccion == 1:
         menu_ventas()
@@ -22,3 +27,5 @@ def menu_principal():
         
     else:
         print('Opción inválida')
+
+menu_principal()

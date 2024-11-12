@@ -8,7 +8,7 @@ def menu_garantias():
     print('5. Mostrar garantías')
     print('6. Volver al menú principal')
 
-    seleccion = input('Seleccione una opción: ')
+    seleccion = int(input('Seleccione una opción: '))
 
     if seleccion == 1:
         print('Agregar garantía')

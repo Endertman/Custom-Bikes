@@ -8,4 +8,4 @@ def menu_stock():
     print('5. Mostrar stock')
     print('6. Volver al menú principal')
 
-    seleccion = input('Seleccione una opción: ')
+    seleccion = int(input('Seleccione una opción: '))
