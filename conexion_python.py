@@ -371,5 +371,3 @@ def selects():
     select_codigos_descuentos()
 
     conn.close()
-
-selects()
