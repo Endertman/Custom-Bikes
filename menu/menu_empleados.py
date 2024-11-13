@@ -40,4 +40,3 @@ def menu_empleados():
 def agregar_empleado():
     nombre = input('Ingrese el nombre del empleado: ')
 
-menu_empleados()

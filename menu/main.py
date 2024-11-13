@@ -1,7 +1,7 @@
 from menu_ventas import menu_ventas
 from menu_garantias import menu_garantias
-from menu_empleados import menu_empleados
 from menu_stock import menu_stock
+from menu_empleados import menu_empleados
 
 def menu_principal():
     seleccion = 0
