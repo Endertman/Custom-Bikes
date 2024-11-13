@@ -1,5 +1,5 @@
-from funciones.funciones_clientes import insert_cliente, mostrar_clientes 
-from funciones.funciones_productos import insert_producto, mostrar_productos
+from custom_bikes.funciones.funciones_clientes import insert_cliente #, mostrar_clientes 
+# from funciones.funciones_productos import insert_producto, mostrar_productos
 
 def menu_ventas():
     seleccion = 0
@@ -12,7 +12,7 @@ def menu_ventas():
     print('6. Volver al menú principal')
 
     seleccion = int(input('Seleccione una opción: '))
-
+    
     if seleccion == 1:
         print('Agregar venta')
         agregar_venta()
@@ -51,9 +51,7 @@ def agregar_venta():
     
     elif seleccion_ingreso_data == 2:
         print('Generar venta')
-        agregar_venta_manual()
+        insert_cliente()
 
-def agregar_venta_csv():
-    import csv
-    import os
+
 
