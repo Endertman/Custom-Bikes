@@ -105,7 +105,7 @@ def crear_db():
             FOREIGN KEY(id_pedido) REFERENCES historico_pedidos(id_pedido)
         )''')
     
-    def crear_tabla_bicicleta():
+    def crear_tabla_bicicleta(): #chequear por en respaldo no esta la referencia de calculo precio
         cursor.execute('''CREATE TABLE IF NOT EXISTS bicicleta (
             id_pedido INTEGER NOT NULL,
             precio INTEGER NOT NULL,
@@ -132,7 +132,7 @@ def crear_db():
     
     def crear_tabla_boleta():
         cursor.execute('''CREATE TABLE IF NOT EXISTS boleta (
-            id_pedido INTEGER NOT NULL UNIQUE,
+            id_pedido INTEGER NOT NULL UNIQUE PRIMARY KEY,
             precio_final INTEGER NOT NULL,
             id_pago INTEGER NOT NULL,
             FOREIGN KEY(id_pedido) REFERENCES pedido(id_pedido),
@@ -142,6 +142,7 @@ def crear_db():
     
     def crear_tabla_cotizacion_codigo():
         cursor.execute('''CREATE TABLE IF NOT EXISTS cotizacion_codigo (
+                    ID
             codigo_seleccionado TEXT NOT NULL UNIQUE,
             FOREIGN KEY(codigo_seleccionado) REFERENCES codigos_descuento(codigo_descuento)
         )''')

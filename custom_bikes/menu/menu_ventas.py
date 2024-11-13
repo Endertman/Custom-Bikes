@@ -1,5 +1,5 @@
-from custom_bikes.funciones.funciones_clientes import insert_cliente #, mostrar_clientes 
-# from funciones.funciones_productos import insert_producto, mostrar_productos
+from custom_bikes.funciones.funciones_clientes import insert_cliente, seleccionar_cliente 
+from custom_bikes.funciones.funciones_ventas import seleccionar_componentes
 
 def menu_ventas():
     
@@ -64,11 +64,19 @@ def agregar_venta():
             if seleccion_cliente == 1:
                 print('Cliente nuevo')
                 insert_cliente()
+                seleccionar_componentes()
                 
 
             elif seleccion_cliente == 2:
-                print('Cliente existente')
-                mostrar_clientes()
+                cliente = seleccionar_cliente()
+                if cliente is None:
+                    print('Cliente no encontrado')
+                    continue
+                else:
+                    print('Cliente existente')
+                
+                seleccionar_cliente()
+                seleccionar_productos(cliente)
             
             else:
                 print('Opción inválida')
