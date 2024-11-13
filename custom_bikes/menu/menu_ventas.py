@@ -2,42 +2,44 @@ from custom_bikes.funciones.funciones_clientes import insert_cliente #, mostrar_
 # from funciones.funciones_productos import insert_producto, mostrar_productos
 
 def menu_ventas():
-    seleccion = 0
-
-    print('1. Agregar venta')
-    print('2. Eliminar venta')
-    print('3. Modificar venta')
-    print('4. Buscar venta')
-    print('5. Mostrar ventas')
-    print('6. Volver al menú principal')
-
-    seleccion = int(input('Seleccione una opción: '))
     
-    if seleccion == 1:
-        print('Agregar venta')
-        agregar_venta()
+    while True:
+        print('Ventas')
+        print('1. Agregar venta')
+        print('2. Eliminar venta')
+        print('3. Modificar venta')
+        print('4. Buscar venta')
+        print('5. Mostrar ventas')
+        print('6. Volver al menú principal')
 
-    elif seleccion == 2:
-        print('Eliminar venta')
-        eliminar_venta()
+        seleccion = int(input('Seleccione una opción: '))
 
-    elif seleccion == 3:
-        print('Modificar venta')
-        modificar_venta()    
+        if seleccion == 1:
+            print('Agregar venta')
+            agregar_venta()
 
-    elif seleccion == 4:
-        print('Buscar venta')
-        buscar_venta()
+        elif seleccion == 2:
+            print('Eliminar venta')
+            eliminar_venta()
 
-    elif seleccion == 5:
-        print('Mostrar ventas')
-        mostrar_ventas()
+        elif seleccion == 3:
+            print('Modificar venta')
+            modificar_venta()
 
-    elif seleccion == 6:
-        menu_principal()
+        elif seleccion == 4:
+            print('Buscar venta')
+            buscar_venta()
 
-    else:
-        print('Opción inválida')
+        elif seleccion == 5:
+            print('Mostrar ventas')
+            mostrar_ventas()
+
+        elif seleccion == 6:
+            print('Volver al menú principal')
+            break
+    
+        else:
+            print('Opción inválida')
 
 def agregar_venta():
 
@@ -46,12 +48,34 @@ def agregar_venta():
     seleccion_ingreso_data = int(input('Seleccione una opción: '))
 
     if seleccion_ingreso_data == 1:
-        print('Agregar venta (csv)')
+        print('Agregar ventas (csv)')
         agregar_venta_csv()
     
     elif seleccion_ingreso_data == 2:
         print('Generar venta')
-        insert_cliente()
+
+        while True:
+            print('Seleccione el cliente')
+            print('1. Cliente nuevo')
+            print('2. Cliente existente')
+
+            seleccion_cliente = int(input('Seleccione una opción: '))
+
+            if seleccion_cliente == 1:
+                print('Cliente nuevo')
+                insert_cliente()
+                
+
+            elif seleccion_cliente == 2:
+                print('Cliente existente')
+                mostrar_clientes()
+            
+            else:
+                print('Opción inválida')
+
+
+
+insert_cliente()
 
 
 
