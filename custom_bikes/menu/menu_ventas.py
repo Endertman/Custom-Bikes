@@ -75,7 +75,4 @@ def agregar_venta():
 
 
 
-insert_cliente()
-
-
 
