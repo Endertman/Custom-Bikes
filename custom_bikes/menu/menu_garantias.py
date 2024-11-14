@@ -14,7 +14,7 @@ def menu_garantias():
     
         if seleccion == 1:
             print('Extender garantía')
-            agregar_garantia()
+            extender_garantia()
     
         elif seleccion == 2:
             print('Eliminar garantía')
