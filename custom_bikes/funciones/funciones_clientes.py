@@ -22,8 +22,6 @@ def insert_cliente():
 
         conn.commit()
         print(f'Cliente {nombre} {apellido} agregado exitosamente.')
-
-        return rut_id
     
     except sqlite3.Error as e:
         print("Error al insertar el cliente:", e)
@@ -42,9 +40,8 @@ def seleccionar_cliente():
     conn.close()
 
     if cliente:
-        print(f"Cliente encontrado: {cliente[1]} {cliente[2]}")  
-        return cliente
+        print(f"Cliente encontrado: {cliente[1]} {cliente[2]}")  # Muestra nombre y apellido
+        return cliente  # Devuelve los datos del cliente
     else:
         print("Cliente no encontrado.")
         return None
-    
