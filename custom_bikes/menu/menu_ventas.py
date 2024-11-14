@@ -74,17 +74,11 @@ def agregar_venta():
 
             elif seleccion_cliente == 2:
                 cliente = seleccionar_cliente()
-                if cliente is None:
-                    print('Cliente no encontrado')
-                    continue
-                else:
-                    print('Cliente existente')
+                rut_id = cliente[0]
+                id_pedido_actual = id_pedido(rut_id)
+                seleccionar_componentes(id_pedido_actual)
 
-                    rut_id = cliente[0]
-                    id_pedido_actual = id_pedido(rut_id)
-                    seleccionar_componentes(id_pedido_actual)
-
-                    break
+                break
         
             else:
                 print('Opción inválida')

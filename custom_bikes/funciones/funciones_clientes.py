@@ -35,7 +35,7 @@ def seleccionar_cliente():
     conn = sqlite3.connect('custom_bikes/custom_bikes.db')
     cursor = conn.cursor()
 
-    cursor.execute("SELECT personas.rut_id, personas.nombre, personas.apellido FROM cliente INNER JOIN personas ON cliente.rut_id = personas.rut_id")
+    cursor.execute("SELECT personas.rut_id, personas.nombre, personas.apellido FROM clientes INNER JOIN personas ON clientes.rut_id = personas.rut_id")
     rows = cursor.fetchall()
     for row in rows:
         print(row)
@@ -53,4 +53,5 @@ def seleccionar_cliente():
     else:
         print("Cliente no encontrado.")
         return None
-    
+
+seleccionar_cliente()
