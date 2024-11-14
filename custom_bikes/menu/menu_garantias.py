@@ -1,5 +1,4 @@
 from custom_bikes.funciones.funciones_clientes import insert_cliente, seleccionar_cliente
-from custom_bikes.funciones.funciones_garantias import 
 
 def menu_garantias():
     seleccion = 0
@@ -139,7 +138,4 @@ def buscar_garantia():
                 
             else:
                 print('Opción invádila.')
-
-
-                #peo
 

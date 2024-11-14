@@ -35,8 +35,14 @@ def seleccionar_cliente():
     conn = sqlite3.connect('custom_bikes/custom_bikes.db')
     cursor = conn.cursor()
 
+    cursor.execute("SELECT personas.rut_id, personas.nombre, personas.apellido FROM cliente INNER JOIN personas ON cliente.rut_id = personas.rut_id")
+    rows = cursor.fetchall()
+    for row in rows:
+        print(row)
+
     rut_id = input("Ingrese el RUT del cliente: ")
-    cursor.execute("SELECT * FROM personas WHERE rut_id = ?", (rut_id,)) #agregar innerjoin
+
+    cursor.execute("SELECT * FROM personas WHERE rut_id = ?", (rut_id,))
     cliente = cursor.fetchone()
 
     conn.close()

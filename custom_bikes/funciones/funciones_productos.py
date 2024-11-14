@@ -75,30 +75,42 @@ def agregar_producto():
     stock = int(input('Ingrese el stock (si no hay stock coloque 0): '))
     precio = int(input('Ingrese el precio: '))
     print('Producto agregado exitosamente.')
-    
-    # Si van a agregar el precio tienen que modificar la tabla almacen ya que no existe esa columna en el momento que escribo este mensaje, solo modifican el codigo de aqui abajo
-    cursor.execute('''INSERT INTO almacen (sku, nombre, categoria, tipo, descuento_individual, stock) VALUES (?, ?, ?, ?, ?, ?)''', (sku_producto, nombre_producto, categoria_producto, tipo_producto, descuento_individual, stock))
-    conn.commit()
-    conn.close()
-    
+
+    try:
+        cursor.execute('''INSERT INTO almacen (sku, nombre, categoria, tipo, descuento_individual, stock, precio) VALUES (?, ?, ?, ?, ?, ?)''', (sku_producto, nombre_producto, categoria_producto, tipo_producto, descuento_individual, stock, precio))
+        conn.commit()
+        
+    except sqlite3.Error as e:
+        print("Error al insertar el producto:", e)   
+
+    finally:    
+        conn.close()
 
 def eliminar_producto():
     conn = sqlite3.connect('custom_bikes\custom_bikes.db')
     cursor = conn.cursor()
 
-    sku_producto = input('Ingrese el codigo del producto que desea eliminar: ')
-    cursor.execute('''DELETE FROM almacen WHERE sku = ?''', (sku_producto,))
-    conn.commit()
-    conn.close()
-    print('Producto eliminado exitosamente.')
+    cursor.execute('SELECT * FROM almacen')
+    rows = cursor.fetchall()
+    for row in rows:
+        print(row)
 
+    sku_producto = input('Ingrese el codigo del producto que desea eliminar: ')
+
+    try:
+        cursor.execute('''DELETE FROM almacen WHERE sku = ?''', (sku_producto,))
+        conn.commit
+        print('Producto eliminado exitosamente.')
+
+    except sqlite3.Error as e:
+        print("Error al eliminar el producto:", e)
+    
+    finally:
+        conn.close()
+       
 #def modificar_producto():
 
-
-
-
 #def buscar_producto():
-
 
 def mostrar_productos():
     conn = sqlite3.connect('custom_bikes\custom_bikes.db')
