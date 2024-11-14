@@ -1,6 +1,6 @@
 import sqlite3
 
-def seleccionar_componentes(id_pedido, cliente=None):
+def seleccionar_componentes(id_pedido):
     conn = sqlite3.connect('custom_bikes/custom_bikes.db')
     cursor = conn.cursor()
 
@@ -63,7 +63,7 @@ def seleccionar_componentes(id_pedido, cliente=None):
 
     try:
         cursor.execute('''
-            INSERT INTO lista_componentes (
+            INSERT INTO componentes (
                 id_pedido, marco_sku, transmision_sku, frenos_sku, ruedas_sku, 
                 neumaticos_sku, tija_sku, manillar_sku, pedales_sku, sillin_sku
             ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
@@ -86,5 +86,3 @@ def seleccionar_componentes(id_pedido, cliente=None):
         conn.rollback()
 
     conn.close()
-
-seleccionar_componentes(id_pedido=1)
