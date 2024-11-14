@@ -140,3 +140,6 @@ def buscar_garantia():
             else:
                 print('Opción invádila.')
 
+
+                #peo
+
