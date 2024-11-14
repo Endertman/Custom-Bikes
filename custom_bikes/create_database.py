@@ -6,7 +6,7 @@ def crear_db():
 
     def crear_tabla_personas():
         cursor.execute('''CREATE TABLE IF NOT EXISTS personas (
-            rut_id TEXT NOT NULL UNIQUE,
+            rut_id TEXT NOT NULL,
             nombre TEXT NOT NULL,
             apellido TEXT NOT NULL,
             telefono INTEGER NOT NULL,
@@ -17,7 +17,7 @@ def crear_db():
 
     def crear_tabla_clientes():
         cursor.execute('''CREATE TABLE IF NOT EXISTS clientes (
-            rut_id TEXT NOT NULL UNIQUE,
+            rut_id TEXT NOT NULL,
             altura INTEGER NOT NULL,
             PRIMARY KEY(rut_id),
             FOREIGN KEY(rut_id) REFERENCES personas(rut_id) ON DELETE CASCADE
@@ -25,7 +25,7 @@ def crear_db():
 
     def crear_tabla_tecnicos():
         cursor.execute('''CREATE TABLE IF NOT EXISTS tecnicos (
-            rut_id TEXT NOT NULL UNIQUE,
+            rut_id TEXT NOT NULL,
             especialidad TEXT NOT NULL,
             PRIMARY KEY(rut_id),
             FOREIGN KEY(rut_id) REFERENCES personas(rut_id) ON DELETE CASCADE
@@ -33,7 +33,7 @@ def crear_db():
 
     def crear_tabla_tecnico_pedido():
         cursor.execute('''CREATE TABLE IF NOT EXISTS tecnico_pedido (
-            id_pedido TEXT NOT NULL UNIQUE,
+            id_pedido TEXT NOT NULL,
             id_tecnico TEXT NOT NULL,
             PRIMARY KEY("id_pedido","id_tecnico"),
             FOREIGN KEY(id_pedido) REFERENCES pedido(id_pedido) ON DELETE CASCADE,
@@ -42,7 +42,7 @@ def crear_db():
 
     def crear_tabla_pedido():
         cursor.execute('''CREATE TABLE IF NOT EXISTS pedido (
-            id_pedido TEXT NOT NULL UNIQUE,
+            id_pedido TEXT NOT NULL,
             fecha_inicio_pedido TEXT NOT NULL,
             cliente TEXT NOT NULL,
             fecha_entrega_pedido TEXT NOT NULL,
@@ -52,7 +52,7 @@ def crear_db():
 
     def crear_tabla_almacen():
         cursor.execute('''CREATE TABLE IF NOT EXISTS almacen (
-            sku TEXT NOT NULL UNIQUE,
+            sku TEXT NOT NULL,
             nombre TEXT NOT NULL,
             categoria TEXT NOT NULL,
             tipo TEXT NOT NULL,
@@ -64,7 +64,7 @@ def crear_db():
 
     def crear_tabla_componentes():
         cursor.execute('''CREATE TABLE IF NOT EXISTS componentes (
-            "id_pedido" INTEGER NOT NULL UNIQUE,
+            "id_pedido" INTEGER NOT NULL,
             "marco_sku" TEXT NOT NULL,
             "transmision_sku" TEXT NOT NULL,
             "frenos_sku" TEXT NOT NULL,
@@ -87,48 +87,48 @@ def crear_db():
             FOREIGN KEY("sillin_sku") REFERENCES "almacen"("sku")
         )''')
    
+    def crear_tabla_cotizacion():
+       cursor.execute('''CREATE TABLE IF NOT EXISTS cotizacion (
+           id_pedido TEXT NOT NULL,
+           calculo_precio INTEGER NOT NULL,
+           PRIMARY KEY(id_pedido),
+           FOREIGN KEY(id_pedido) REFERENCES componentes(id_pedido) ON DELETE CASCADE
+       )''')
+
     def crear_tabla_codigos_descuentos():
-        cursor.execute('''CREATE TABLE IF NOT EXISTS codigos_descuentos (
-            codigo_descuento TEXT NOT NULL UNIQUE,
-            porcentaje REAL NOT NULL,
-            PRIMARY KEY("codigo_descuento")
-        )''')
+       cursor.execute('''CREATE TABLE IF NOT EXISTS codigos_descuentos (
+           codigo TEXT NOT NULL,
+           porcentaje REAL NOT NULL,
+           PRIMARY KEY(codigo)
+       )''')
 
     def crear_tabla_cotizacion_codigo():
-        cursor.execute('''CREATE TABLE IF NOT EXISTS cotizacion_codigo (
-                id_pedido TEXT NOT NULL UNIQUE,
-                codigo_seleccionado TEXT NOT NULL,
-                PRIMARY KEY("id_pedido", "codigo_selecionado"),       
-                FOREIGN KEY(id_pedido) REFERENCES cotizacion(id_pedido) ON DELETE CASCADE,
-                FOREIGN KEY(codigo_seleccionado) REFERENCES codigos_descuento(codigo_descuento)
-        )''')    
-    
-    def crear_tabla_cotizacion():
-        cursor.execute('''CREATE TABLE IF NOT EXISTS cotizacion (
-            id_pedido TEXT NOT NULL UNIQUE,
-            calculo_precio INTEGER NOT NULL,
-            PRIMARY KEY(id_pedido),
-            FOREIGN KEY(id_pedido) REFERENCES componentes(id_pedido) ON DELETE CASCADE,
-        )''')
-
+       cursor.execute('''CREATE TABLE IF NOT EXISTS cotizacion_codigo (
+           id_pedido TEXT NOT NULL,
+           codigo_seleccionado TEXT NOT NULL,
+           PRIMARY KEY(id_pedido, codigo_seleccionado),       
+           FOREIGN KEY(id_pedido) REFERENCES cotizacion(id_pedido) ON DELETE CASCADE,
+           FOREIGN KEY(codigo_seleccionado) REFERENCES codigos_descuentos(codigo)  -- Aquí se cambió "codigo_selecionado" por "codigo"
+       )''')
+      
     def crear_tabla_bicicleta():
         cursor.execute('''CREATE TABLE IF NOT EXISTS bicicleta (
-            id_pedido TEXT NOT NULL UNIQUE,
+            id_pedido TEXT NOT NULL,
             precio INTEGER NOT NULL,
             PRIMARY KEY(id_pedido),
-            FOREIGN KEY(id_pedido) REFERENCES cotizacion(id_pedido) ON DELETE CASCADE,
+            FOREIGN KEY(id_pedido) REFERENCES cotizacion(id_pedido) ON DELETE CASCADE
         )''')
         
     def crear_tabla_transacciones():
         cursor.execute('''CREATE TABLE IF NOT EXISTS transacciones (
-            id_pago TEXT NOT NULL UNIQUE,
+            id_pago TEXT NOT NULL,
             monto_pagado INTEGER NOT NULL,
-            PRIMARY KEY(id_pago AUTOINCREMENT)
+            PRIMARY KEY(id_pago)
         )''')
     
     def crear_tabla_boleta():
         cursor.execute('''CREATE TABLE IF NOT EXISTS boleta (
-            id_pedido TEXT NOT NULL UNIQUE,
+            id_pedido TEXT NOT NULL,
             precio_final INTEGER NOT NULL,
             id_pago INTEGER NOT NULL,
             PRIMARY KEY(id_pedido),
@@ -139,7 +139,7 @@ def crear_db():
     
     def crear_tabla_historico_pedidos():
         cursor.execute('''CREATE TABLE IF NOT EXISTS historico_pedidos (
-            id_pedido TEXT NOT NULL UNIQUE,
+            id_pedido TEXT NOT NULL,
             fecha_entrega_pedido TEXT NOT NULL,
             PRIMARY KEY(id_pedido),
             FOREIGN KEY(id_pedido) REFERENCES pedido(id_pedido)
@@ -147,7 +147,7 @@ def crear_db():
     
     def crear_tabla_garantia():
         cursor.execute('''CREATE TABLE IF NOT EXISTS garantia (
-            id_pedido TEXT NOT NULL UNIQUE,
+            id_pedido TEXT NOT NULL,
             fecha_inicio TEXT NOT NULL,
             fecha_fin TEXT NOT NULL,
             cobertura TEXT NOT NULL,
@@ -215,7 +215,7 @@ def inserts():
         ''')
 
     def insert_tecnicos():
-        cursor.execute('''INSERT INTO tecnico (rut_id, especialidad)
+        cursor.execute('''INSERT INTO tecnicos (rut_id, especialidad)
             VALUES
             ('12345678-9', 'Mecánica'),
             ('23456789-0', 'Electrónica'),
@@ -230,7 +230,7 @@ def inserts():
         ''')
 
     def insert_clientes():
-        cursor.execute('''INSERT INTO cliente (rut_id, altura)
+        cursor.execute('''INSERT INTO clientes (rut_id, altura)
             VALUES
             ('12345678-0', 170),
             ('23456789-1', 165),
@@ -331,7 +331,7 @@ def inserts():
     ''')
 
     def insert_codigos_descuentos():
-        cursor.execute('''INSERT INTO codigos_descuentos (codigo_descuento, porcentaje)
+        cursor.execute('''INSERT INTO codigos_descuentos (codigo, porcentaje)
             VALUES
             ('DESCUENTO10',0.10),
             ('DESCUENTO20',0.20),
@@ -350,3 +350,5 @@ def inserts():
     conn.commit()
     conn.close()
 
+crear_db()
+inserts()
