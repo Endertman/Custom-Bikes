@@ -1,6 +1,5 @@
 from custom_bikes.funciones.funciones_clientes import insert_cliente, seleccionar_cliente 
 from custom_bikes.funciones.funciones_ventas import seleccionar_componentes
-from custom_bikes.funciones.funciones_pedido import id_pedido
 
 def menu_ventas():
     
@@ -63,14 +62,10 @@ def agregar_venta():
             seleccion_cliente = int(input('Seleccione una opción: '))
 
             if seleccion_cliente == 1:
-
                 print('Cliente nuevo')
-
-                rut_id = insert_cliente()
-                pedido_id = id_pedido(rut_id)
-                seleccionar_componentes(pedido_id)
+                insert_cliente()
+                seleccionar_componentes()
                 
-                break
 
             elif seleccion_cliente == 2:
                 cliente = seleccionar_cliente()
@@ -79,13 +74,10 @@ def agregar_venta():
                     continue
                 else:
                     print('Cliente existente')
-
-                    rut_id = cliente[0]
-                    id_pedido_actual = id_pedido(rut_id)
-                    seleccionar_componentes(id_pedido_actual)
-
-                    break
-        
+                
+                seleccionar_cliente()
+                seleccionar_productos(cliente)
+            
             else:
                 print('Opción inválida')
 
