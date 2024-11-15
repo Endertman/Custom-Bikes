@@ -147,4 +147,3 @@ def seleccionar_componentes(id_pedido):
 
     conn.close()
 
-agregar_venta_csv()
