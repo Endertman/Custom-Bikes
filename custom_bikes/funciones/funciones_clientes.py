@@ -22,6 +22,8 @@ def insert_cliente():
 
         conn.commit()
         print(f'Cliente {nombre} {apellido} agregado exitosamente.')
+
+        return rut_id
     
     except sqlite3.Error as e:
         print("Error al insertar el cliente:", e)
@@ -33,15 +35,23 @@ def seleccionar_cliente():
     conn = sqlite3.connect('custom_bikes/custom_bikes.db')
     cursor = conn.cursor()
 
+    cursor.execute("SELECT personas.rut_id, personas.nombre, personas.apellido FROM clientes INNER JOIN personas ON clientes.rut_id = personas.rut_id")
+    rows = cursor.fetchall()
+    for row in rows:
+        print(row)
+
     rut_id = input("Ingrese el RUT del cliente: ")
-    cursor.execute("SELECT * FROM personas WHERE rut_id = ?", (rut_id,)) #agregar innerjoin
+
+    cursor.execute("SELECT * FROM personas WHERE rut_id = ?", (rut_id,))
     cliente = cursor.fetchone()
 
     conn.close()
 
     if cliente:
-        print(f"Cliente encontrado: {cliente[1]} {cliente[2]}")  # Muestra nombre y apellido
-        return cliente  # Devuelve los datos del cliente
+        print(f"Cliente encontrado: {cliente[1]} {cliente[2]}")  
+        return cliente
     else:
         print("Cliente no encontrado.")
         return None
+
+seleccionar_cliente()
