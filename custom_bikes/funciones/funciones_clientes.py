@@ -76,8 +76,8 @@ def agregar_cliente_csv():
 
             except sqlite3.Error as e:
                 print("Error al insertar el cliente:", e)
-    
-        conn.close()
+
+    conn.close()
 
 def seleccionar_cliente():
     conn = sqlite3.connect('custom_bikes/custom_bikes.db')

@@ -1,4 +1,63 @@
 import sqlite3
+import funciones_pedido import 
+
+def agregar_venta_csv():
+    import csv
+    conn = sqlite3.connect('custom_bikes/custom_bikes.db')
+    cursor = conn.cursor()
+            
+    with open('custom_bikes\datos\pedidos_respaldo.csv', 'r') as pedidos:
+        pedidos_reader = csv.reader(pedidos)
+        next(pedidos_reader)
+
+        for pedidos in pedidos_reader:
+            rut_id = pedidos[0]
+            fecha_inicio_pedido = row[1]
+            cliente = row[2]
+            fecha_entrega_pedido = row[3]
+
+            pedido_id = id_pedido(rut_id)
+            i
+
+            with open ('custom_bikes\datos\lista_componentes_respaldo.csv') as file1:
+                reader1 = csv.reader(file1)
+                next(reader1)
+                for row in reader1:
+                    marco_sku = row[1]
+                    transmision_sku = row[2]
+                    frenos_sku = row[3]
+                    ruedas_sku = row[4]
+                    neumaticos_sku  = row[5]
+                    tija_sku = row[6]
+                    manillar_sku = row[7]
+                    pedales_sku =  row[8]
+                    sillin_sku = row[9]
+
+            try:
+                cursor.execute('''INSERT INTO ventas (id_pedido, rut_id, fecha, monto, estado)
+                                  VALUES (?, ?, ?, ?, ?)''', (id_pedido, fecha_inicio_pedido, cliente, fecha_entrega_pedido))
+
+                conn.commit()
+                print(f'Pedido {id_pedido} agregada exitosamente.')
+
+            except sqlite3.Error as e:
+                print("Error al insertar la venta:", e)
+
+        for row in reader:
+            id_pedido = row[0]
+           
+           
+
+            try:
+                cursor.execute('''INSERT INTO pedidos (id_pedido, sku, cantidad)
+                                  VALUES (?, ?, ?)''', (id_pedido, sku, cantidad))
+
+                conn.commit()
+                print(f'Pedido {id_pedido} agregada exitosamente.')
+
+            except sqlite3.Error as e:
+                print("Error al insertar el pedido:", e)
+
 
 def seleccionar_componentes(id_pedido):
     conn = sqlite3.connect('custom_bikes/custom_bikes.db')

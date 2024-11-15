@@ -1,5 +1,5 @@
-from custom_bikes.funciones.funciones_clientes import insert_cliente, seleccionar_cliente 
-from custom_bikes.funciones.funciones_ventas import seleccionar_componentes
+from custom_bikes.funciones.funciones_clientes import insert_cliente, seleccionar_cliente, agregar_cliente_csv
+from custom_bikes.funciones.funciones_ventas import seleccionar_componentes, agregar_cliente_csv
 from custom_bikes.funciones.funciones_pedido import id_pedido
 
 def menu_ventas():
@@ -50,6 +50,7 @@ def agregar_venta():
 
     if seleccion_ingreso_data == 1:
         print('Agregar ventas (csv)')
+        agregar_cliente_csv()
         agregar_venta_csv()
     
     elif seleccion_ingreso_data == 2:

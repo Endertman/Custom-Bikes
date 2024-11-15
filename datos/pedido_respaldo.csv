@@ -1,4 +1,4 @@
-id_pedido,fecha_inicio_pedido,cliente,fecha_entrega_pedido
+rut_id,fecha_inicio_pedido,cliente,fecha_entrega_pedido
 12345678-0,2024-10-3,12345678-0,2024-10-3
 23456789-1,2024-10-13,23456789-1,2024-10-13
 34567890-2,2024-10-20,34567890-2,2024-10-20
