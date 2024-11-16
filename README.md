@@ -127,7 +127,7 @@ erDiagram
 
     %% Entidad COMPONENTES relacionada con PEDIDO y ALMACEN
     COMPONENTES {
-        TEXT id_componente PK
+        TEXT id_pedido PK
         TEXT marco_sku FK
         TEXT transmision_sku FK
         TEXT frenos_sku FK
@@ -155,9 +155,8 @@ erDiagram
 
     %% Entidad COTIZACION relacionada con PEDIDO y COTIZACION_CODIGO
     COTIZACION {
-        TEXT id_cotizacion PK
+        TEXT id_pedido PK
         INTEGER calculo_precio
-        TEXT id_pedido FK
     }
 
     COTIZACION_CODIGO {
@@ -175,7 +174,7 @@ erDiagram
     COTIZACION ||--o| COTIZACION_CODIGO : "aplica"
     COTIZACION_CODIGO ||--o| CODIGOS_DESCUENTOS : "usa"
 
-    %% Entidad BICICLETA relacionada con PEDIDO
+    %% Entidad BICICLETA relacionada con COTIZACION
     BICICLETA {
         TEXT id_bicicleta PK
         INTEGER precio
@@ -185,7 +184,7 @@ erDiagram
 
     %% Relación de BICICLETA con BOLETA
     BICICLETA ||--|{ BOLETA : "detalla"
-    PEDIDO ||--|{ BICICLETA : "produce"
+    COTIZACION ||--|{ BICICLETA : "produce"
 
     %% Entidad BOLETA relacionada con TRANSACCIONES
     TRANSACCIONES {
