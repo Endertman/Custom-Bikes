@@ -51,13 +51,11 @@ def agregar_venta_csv():
                         
                     except sqlite3.Error as e:
                         print(f"Error al agregar los componentes del pedido {pedido_id}: {e}")
+                
+                with open ()
                 conn.commit()
                 print(f'Componentes para el pedido {pedido_id} agregados exitosamente.')
-
-               
-                    
-
-                  
+   
     except Exception as e:
         print(f"Error general al procesar los archivos: {e}")
 

@@ -54,10 +54,10 @@ def agregar_cliente_csv():
                                   VALUES (?, ?, ?, ?, ?, ?)''', (rut_id, nombre, apellido, telefono, correo, direccion))
 
                 conn.commit()
-                print(f'Cliente {nombre} {apellido} agregado exitosamente.')
+                print(f'Persona {nombre} {apellido} agregado exitosamente.')
 
             except sqlite3.Error as e:
-                print("Error al insertar el cliente:", e)
+                print("Error al insertar a la persona:", e)
 
     with open('custom_bikes\datos\cliente_respaldo.csv', 'r') as file:
         reader = csv.reader(file)
