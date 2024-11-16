@@ -155,9 +155,8 @@ erDiagram
 
     %% Entidad COTIZACION relacionada con PEDIDO y COTIZACION_CODIGO
     COTIZACION {
-        TEXT id_cotizacion PK
+        TEXT id_pedido PK
         INTEGER calculo_precio
-        TEXT id_pedido FK
     }
 
     COTIZACION_CODIGO {
