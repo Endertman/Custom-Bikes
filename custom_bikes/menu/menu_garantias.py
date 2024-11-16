@@ -49,7 +49,6 @@ def extender_garantia():
 def eliminar_garantia():
 
     print('Eliminar Garantía')
-    print('1. Eliminar una garantía')
 
     seleccion_eliminar = int(input('Seleccione una opción: '))
 

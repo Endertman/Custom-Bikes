@@ -48,12 +48,16 @@ def agregar_venta_csv():
 
                     try:
                         cursor.execute('''INSERT INTO componentes (id_pedido, marco_sku, transmision_sku, frenos_sku, ruedas_sku, neumaticos_sku, tija_sku, manillar_sku, pedales_sku, sillin_sku) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)''', (pedido_id, marco_sku, transmision_sku, frenos_sku, ruedas_sku, neumaticos_sku, tija_sku, manillar_sku, pedales_sku, sillin_sku))
-
+                        
                     except sqlite3.Error as e:
                         print(f"Error al agregar los componentes del pedido {pedido_id}: {e}")
                 conn.commit()
                 print(f'Componentes para el pedido {pedido_id} agregados exitosamente.')
 
+               
+                    
+
+                  
     except Exception as e:
         print(f"Error general al procesar los archivos: {e}")
 

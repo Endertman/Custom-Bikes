@@ -52,6 +52,7 @@ def agregar_venta():
         print('Agregar ventas (csv)')
         agregar_cliente_csv()
         agregar_venta_csv()
+        print('Ventas agregadas exitosamente')
     
     elif seleccion_ingreso_data == 2:
         print('Generar venta')
