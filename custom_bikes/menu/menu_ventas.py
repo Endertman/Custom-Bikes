@@ -1,6 +1,5 @@
-from custom_bikes.funciones.funciones_clientes import insert_cliente, seleccionar_cliente, agregar_cliente_csv
-from custom_bikes.funciones.funciones_ventas import seleccionar_componentes, agregar_venta_csv
-from custom_bikes.funciones.funciones_pedido import id_pedido
+from custom_bikes.funciones.funciones_clientes import agregar_cliente_csv
+from custom_bikes.funciones.funciones_ventas import agregar_venta_csv, agregar_venta_cliente_nuevo, agregar_venta_cliente_existente, eliminar_venta, modificar_venta, buscar_venta, mostrar_ventas
 
 def menu_ventas():
     
@@ -21,14 +20,17 @@ def menu_ventas():
 
         elif seleccion == 2:
             print('Eliminar venta')
-            eliminar_venta()
+            pedido_id_seleccionado = input("Ingrese el ID del pedido a eliminar: ")
+            eliminar_venta(pedido_id_seleccionado)
 
         elif seleccion == 3:
             print('Modificar venta')
-            modificar_venta()
+            pedido_id_seleccionado = input("Ingrese el ID del pedido a modificar: ")
+            modificar_venta(pedido_id_seleccionado)
 
         elif seleccion == 4:
             print('Buscar venta')
+            pedido_id_seleccionado = input("Ingrese el ID del pedido a buscar: ")
             buscar_venta()
 
         elif seleccion == 5:
@@ -67,24 +69,16 @@ def agregar_venta():
             if seleccion_cliente == 1:
 
                 print('Cliente nuevo')
-
-                rut_id = insert_cliente()
-                pedido_id = id_pedido(rut_id)
-                seleccionar_componentes(pedido_id)
+                agregar_venta_cliente_nuevo()
                 
                 break
 
             elif seleccion_cliente == 2:
-                cliente = seleccionar_cliente()
-                rut_id = cliente[0]
-                id_pedido_actual = id_pedido(rut_id)
-                seleccionar_componentes(id_pedido_actual)
+
+                print('Cliente existente')
+                agregar_venta_cliente_existente()
 
                 break
         
             else:
                 print('Opción inválida')
-
-
-
-

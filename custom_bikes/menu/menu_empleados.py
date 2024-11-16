@@ -1,4 +1,4 @@
-from custom_bikes.funciones.funciones_empleados import agregar_empleados_csv
+from custom_bikes.funciones.funciones_empleados import agregar_empleados_csv, generar_empleado, eliminar_empleado, modificar_empleado, buscar_empleado, mostrar_empleados
 
 def menu_empleados():
    
@@ -48,3 +48,7 @@ def agregar_empleados():
         print('Agregar empleados (csv)')
         agregar_empleados_csv()
         print('Empleados agregados exitosamente')
+
+    elif seleccion == 2:
+        print('Generar empleado')
+        generar_empleado()
