@@ -1,4 +1,5 @@
 import sqlite3
+import os
 
 def insert_cliente():
     conn = sqlite3.connect('custom_bikes\custom_bikes.db')
@@ -33,11 +34,14 @@ def insert_cliente():
 
 def agregar_cliente_csv():
     import csv
+    ruta_base = os.path.dirname(os.path.abspath(__file__))
+    ruta_csv_personas = os.path.join(ruta_base, '../../datos/personas_respaldo.csv')
+    ruta_csv_cliente = os.path.join(ruta_base, '../../datos/cliente_respaldo.csv')
 
     conn = sqlite3.connect('custom_bikes/custom_bikes.db')
     cursor = conn.cursor()
 
-    with open('custom_bikes\datos\personas_respaldo.csv', 'r') as file:
+    with open(ruta_csv_personas, 'r') as file:
         reader = csv.reader(file)
         next(reader)  
 
@@ -59,7 +63,7 @@ def agregar_cliente_csv():
             except sqlite3.Error as e:
                 print("Error al insertar a la persona:", e)
 
-    with open('custom_bikes\datos\cliente_respaldo.csv', 'r') as file:
+    with open(ruta_csv_cliente, 'r') as file:
         reader = csv.reader(file)
         next(reader)
 
@@ -68,7 +72,7 @@ def agregar_cliente_csv():
             altura = row[1]
 
             try:
-                cursor.execute('''INSERT INTO cliente (rut_id, altura)
+                cursor.execute('''INSERT INTO clientes (rut_id, altura)
                                   VALUES (?, ?)''', (rut_id, altura))
 
                 conn.commit()

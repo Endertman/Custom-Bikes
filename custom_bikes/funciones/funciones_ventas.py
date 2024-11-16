@@ -3,16 +3,31 @@ import csv
 import random
 import string
 import datetime
+import os
 
 from custom_bikes.funciones.funciones_pedido import id_pedido
 from custom_bikes.funciones.funciones_clientes import insert_cliente, seleccionar_cliente
 
+import sqlite3
+import csv
+import os
+from custom_bikes.funciones.funciones_pedido import id_pedido
+from custom_bikes.funciones.funciones_clientes import insert_cliente, seleccionar_cliente
+
 def agregar_venta_csv():
+    ruta_base = os.path.dirname(os.path.abspath(__file__))
+    ruta_csv_pedidos = os.path.join(ruta_base, '../../datos/pedido_respaldo.csv')
+    ruta_csv_tecnico_pedido = os.path.join(ruta_base, '../../datos/tecnico_pedido_respaldo.csv')
+    ruta_csv_lista_componentes = os.path.join(ruta_base, '../../datos/lista_componentes_respaldo.csv')
+    ruta_csv_cotizacion_codigo = os.path.join(ruta_base, '../../datos/cotizacion_codigo_respaldo.csv')
+    ruta_csv_historico_pedidos = os.path.join(ruta_base, '../../datos/historico_pedidos_respaldo.csv')
+    ruta_csv_garantia_respaldo = os.path.join(ruta_base, '../../datos/garantia_respaldo.csv')
+
     conn = sqlite3.connect('custom_bikes/custom_bikes.db')
     cursor = conn.cursor()
     
     try:
-        with open('datos/pedido_respaldo.csv', 'r') as pedidos_file:
+        with open(ruta_csv_pedidos, 'r') as pedidos_file:
             pedidos_reader = csv.reader(pedidos_file)
             next(pedidos_reader)
 
@@ -26,128 +41,114 @@ def agregar_venta_csv():
                 if not pedido_id:
                     print("Error al obtener el ID del pedido.")
                     continue
-            
+
                 try:
-                    cursor.execute('''INSERT INTO pedido (id_pedido, fecha_inicio_pedido, cliente, fecha_entrega_pedido) VALUES (?, ?, ?, ?)''', (pedido_id, fecha_inicio_pedido, cliente, fecha_entrega_pedido))
-                    conn.commit()
+                    cursor.execute('''INSERT INTO pedido (id_pedido, fecha_inicio_pedido, cliente, fecha_entrega_pedido) VALUES (?, ?, ?, ?)''', 
+                                   (pedido_id, fecha_inicio_pedido, cliente, fecha_entrega_pedido))
+                    conn.commit() 
                     print(f"Pedido {pedido_id} agregado correctamente.")
+
+                    with open(ruta_csv_tecnico_pedido, 'r') as tecnico_pedido_file:
+                        tecnico_pedido_reader = csv.reader(tecnico_pedido_file)
+                        next(tecnico_pedido_reader)
+
+                        for tecnico_pedido_row in tecnico_pedido_reader:
+                            tecnico_id = tecnico_pedido_row[1]
+
+                            try:
+                                cursor.execute('''INSERT INTO tecnico_pedido (id_pedido, id_tecnico) VALUES (?, ?)''', (pedido_id, tecnico_id))
+                                conn.commit()
+                                print(f"Técnico {tecnico_id} asignado al pedido {pedido_id}.")
+                            except sqlite3.Error as e:
+                                print(f"Error al agregar el técnico al pedido {pedido_id}: {e}")
+
+                    with open(ruta_csv_lista_componentes, 'r') as componentes_file:
+                        componentes_reader = csv.reader(componentes_file)
+                        next(componentes_reader)
+
+                        for componentes_row in componentes_reader:
+                            marco_sku, transmision_sku, frenos_sku, ruedas_sku, neumaticos_sku, tija_sku, manillar_sku, pedales_sku, sillin_sku = componentes_row
+                            ids_componentes = [marco_sku, transmision_sku, frenos_sku, ruedas_sku, neumaticos_sku, tija_sku, manillar_sku, pedales_sku, sillin_sku]
+                            total_precio = generar_precio(ids_componentes)
+
+                            try:
+                                cursor.execute('''INSERT INTO componentes (id_pedido, marco_sku, transmision_sku, frenos_sku, ruedas_sku, neumaticos_sku, tija_sku, manillar_sku, pedales_sku, sillin_sku) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)''',
+                                               (pedido_id, marco_sku, transmision_sku, frenos_sku, ruedas_sku, neumaticos_sku, tija_sku, manillar_sku, pedales_sku, sillin_sku))
+                                cursor.execute('''INSERT INTO cotizacion (id_pedido, calculo_precio) VALUES (?, ?)''', (pedido_id, total_precio))
+                                conn.commit()
+                            except sqlite3.Error as e:
+                                print(f"Error al agregar los componentes del pedido {pedido_id}: {e}")
+
+                    with open(ruta_csv_cotizacion_codigo, 'r') as cotizacion_codigo_file:
+                        cotizacion_codigo_reader = csv.reader(cotizacion_codigo_file)
+                        next(cotizacion_codigo_reader)
+
+                        for cotizacion_codigo_row in cotizacion_codigo_reader:
+                            codigo = cotizacion_codigo_row[1]
+                            id_pago = generar_codigo_transaccion(longitud=8)
+
+                            cursor.execute('''SELECT porcentaje FROM codigos_descuentos WHERE codigo = ?''', (codigo,))
+                            descuento = cursor.fetchone()
+
+                            if descuento:
+                                descuento_porcentaje = descuento[0]
+                                precio_final = total_precio - (total_precio * descuento_porcentaje)
+                            else:
+                                print(f"No se encontró un descuento para el código {codigo}.")
+                                precio_final = total_precio
+
+                            try:
+                                cursor.execute('''INSERT INTO bicicleta (id_pedido, precio) VALUES (?, ?)''', (pedido_id, precio_final))
+                                cursor.execute('''INSERT INTO cotizacion_codigo (id_pedido, codigo_seleccionado) VALUES (?, ?)''', (pedido_id, codigo))
+                                cursor.execute('''INSERT INTO boleta (id_pedido, precio_final, id_pago) VALUES (?, ?, ?)''', (pedido_id, precio_final, id_pago))
+                                cursor.execute('''INSERT INTO transacciones (id_pago, monto_pagado) VALUES (?, ?)''', (id_pago, precio_final))
+                                conn.commit()
+                                print(f"Precio final del pedido {pedido_id} actualizado correctamente.")
+
+                            except sqlite3.Error as e:
+                                print(f"Error al actualizar el precio final del pedido {pedido_id}: {e}")
+
+                    with open(ruta_csv_historico_pedidos, 'r') as historico_pedido_file:
+                        historico_pedido_reader = csv.reader(historico_pedido_file)
+                        next(historico_pedido_reader)
+
+                        for historico_pedido_row in historico_pedido_reader:
+                            fecha_entrega = historico_pedido_row[1]
+
+                            try:
+                                cursor.execute('''INSERT INTO historico_pedidos (id_pedido, fecha_entrega_pedido) VALUES (?, ?)''', (pedido_id, fecha_entrega))
+                                conn.commit()
+                                print(f"Estado del pedido {pedido_id} actualizado correctamente.")
+                            except sqlite3.Error as e:
+                                print(f"Error al actualizar el estado del pedido {pedido_id}: {e}")
+
+                    with open(ruta_csv_garantia_respaldo, 'r') as garantia_file:
+                        garantia_reader = csv.reader(garantia_file)
+                        next(garantia_reader)
+
+                        for garantia_row in garantia_reader:
+                            fecha_inicio = garantia_row[1]
+                            fecha_fin = garantia_row[2]
+                            cobertura = garantia_row[3]
+                            condiciones = garantia_row[4]
+                            estado = garantia_row[5]
+
+                            try:
+                                cursor.execute('''INSERT INTO garantia (id_pedido, fecha_inicio, fecha_fin, cobertura, condiciones, estado) VALUES (?, ?, ?, ?, ?, ?)''',
+                                               (pedido_id, fecha_inicio, fecha_fin, cobertura, condiciones, estado))
+                                conn.commit()
+                                print(f"Garantía para el pedido {pedido_id} agregada correctamente.")
+
+                            except sqlite3.Error as e:
+                                print(f"Error al agregar la garantía para el pedido {pedido_id}: {e}")
 
                 except sqlite3.Error as e:
                     print(f"Error al agregar el pedido {pedido_id}: {e}")
-                    continue
-                
-                with open ('datos/tecnico_pedido_respaldo.csv') as tecnico_pedido_file:
-                    tecnico_pedido_reader = csv.reader(tecnico_pedido_file)
-                    next(tecnico_pedido_reader)
-
-                    for tecnico_pedido_row in tecnico_pedido_reader:
-                        tecnico_id = tecnico_pedido_row[0]
-                        pedido_id = tecnico_pedido_row[1]
-
-                        try:
-                            cursor.execute('''INSERT INTO tecnico_pedido (tecnico_id, pedido_id) VALUES (?, ?)''', (tecnico_id, pedido_id))
-                            conn.commit()
-                            print(f"Técnico {tecnico_id} asignado al pedido {pedido_id}.")
-
-                        except sqlite3.Error as e:
-                            print(f"Error al agregar el técnico al pedido {pedido_id}: {e}")
-                    
-                with open ('datos/lista_componentes_respaldo.csv') as componentes_file:
-                    componentes_reader = csv.reader(componentes_file)
-                    next(componentes_reader)
-
-                    for componentes_row in componentes_reader:
-                        marco_sku = componentes_row[0]
-                        transmision_sku = componentes_row[1]
-                        frenos_sku = componentes_row[2]
-                        ruedas_sku = componentes_row[3]
-                        neumaticos_sku  = componentes_row[4]
-                        tija_sku = componentes_row[5]
-                        manillar_sku = componentes_row[6]
-                        pedales_sku =  componentes_row[7]
-                        sillin_sku = componentes_row[8]
-
-                        ids_componentes = [marco_sku, transmision_sku, frenos_sku, ruedas_sku, neumaticos_sku, tija_sku, manillar_sku, pedales_sku, sillin_sku]
-
-                        total_precio = generar_precio(ids_componentes)
-
-                    try:
-                        cursor.execute('''INSERT INTO componentes (id_pedido, marco_sku, transmision_sku, frenos_sku, ruedas_sku, neumaticos_sku, tija_sku, manillar_sku, pedales_sku, sillin_sku) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)''', (pedido_id, marco_sku, transmision_sku, frenos_sku, ruedas_sku, neumaticos_sku, tija_sku, manillar_sku, pedales_sku, sillin_sku))
-                        cursor.execute('''INSERT INTO cotizacion (id_pedido, total_precio) VALUES (?, ?)''', (pedido_id, total_precio))
-                        
-                        conn.commit()
-
-                    except sqlite3.Error as e:
-                        print(f"Error al agregar los componentes del pedido {pedido_id}: {e}")
-
-                with open ('datos/cotizacion_codigo_respaldo.csv') as cotizacion_codigo_file:
-                    cotizacion_codigo_reader = csv.reader(cotizacion_codigo_file)
-                    next(cotizacion_codigo_reader)
-                    
-                    for cotizacion_codigo_row in cotizacion_codigo_reader:
-                        codigo = cotizacion_codigo_row[1]
-                        id_pago = generar_codigo_transaccion(longitud=8)
-
-                        cursor.execute('''SELECT porcentaje FROM codigos_descuentos WHERE codigo = ?''', (codigo,))
-                        descuento = cursor.fetchone() 
-
-                        if descuento:
-                            descuento_porcentaje = descuento[0]
-                            precio_final = total_precio - (total_precio * descuento_porcentaje)
-                        
-                        else:
-                            print(f"No se encontró un descuento para el código {codigo}.")
-                            precio_final = total_precio
-                        
-                        try:
-                            cursor.execute('''INSERT INTO bicicleta (id_pedido, precio ) VALUES (?, ?)''', (pedido_id, precio_final))
-                            cursor.execute('''INSERT INTO cotizacion_codigo (id_pedido, codigo_seleccionado) VALUES (?, ?)''', (pedido_id, codigo))
-                            cursor.execute('''INSERT INTO boleta (id_pedido, precio_final, id_pago) VALUES (?, ?)''', (pedido_id, precio_final, id_pago))
-                            cursor.execute('''INSERT INTO transaciones (id_pago, monto_pagado) VALUES (?, ?)''', (id_pago, precio_final))
-                            conn.commit()
-                            print(f"Precio final del pedido {pedido_id} actualizado correctamente.")
-                        
-                        except sqlite3.Error as e:
-                            print(f"Error al actualizar el precio final del pedido {pedido_id}: {e}")
-                
-                with open ('datos/historico_pedido_respaldo.csv') as historico_pedido_file:
-                    historico_pedido_reader = csv.reader(historico_pedido_file)
-                    next(historico_pedido_reader)
-
-                    for historico_pedido_row in historico_pedido_reader:
-                        fecha_entrega = historico_pedido_row[1]
-
-                        try:
-                            cursor.execute('''INSERT INTO historico_pedido (id_pedido, fecha_entrega_pedido) VALUES (?, ?, ?)''', (pedido_id, fecha_entrega))
-                            conn.commit()
-                            print(f"Estado del pedido {id_pedido} actualizado correctamente.")
-
-                        except sqlite3.Error as e:
-                            print(f"Error al actualizar el estado del pedido {id_pedido}: {e}")
-                
-                with open ('datos/garantia_respaldo.csv') as garantia_file:
-                    garantia_reader = csv.reader(garantia_file)
-                    next(garantia_reader)
-
-                    for garantia_row in garantia_reader:
-                        fecha_inicio = garantia_row[1]
-                        fecha_fin = garantia_row[2]
-                        cobertura = garantia_row[3]
-                        condiciones = garantia_row[4]
-                        estado = garantia_row[5]
-                        
-
-                        try:
-                            cursor.execute('''INSERT INTO garantia (id_pedido, fecha_inicio, fecha_fin, cobertura, condiciones, estado) VALUES (?, ?, ?, ?, ?, ?)''', (pedido_id, fecha_inicio, fecha_fin, cobertura, condiciones, estado))
-                            conn.commit()
-                            print(f"Garantía para el pedido {id_pedido} agregada correctamente.")
-
-                        except sqlite3.Error as e:
-                            print(f"Error al agregar la garantía para el pedido {id_pedido}: {e}")
+                    continue 
 
     except Exception as e:
         print(f"Error general al procesar los archivos: {e}")
-
+    
     finally:
         conn.close()
 
@@ -228,7 +229,6 @@ def agregar_venta_cliente_existente():
     conn.close()
 
     generar_factura(rut_id, pedido_id, fecha_inicio_pedido, fecha_entrega_pedido, total_precio, descuento_porcentaje, precio_final, id_pago, ids_componentes, codigo_descuento)
-
 
 def seleccionar_componentes(id_pedido):
     conn = sqlite3.connect('custom_bikes/custom_bikes.db')

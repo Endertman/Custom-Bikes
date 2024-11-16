@@ -1,6 +1,6 @@
 import sqlite3
 import datetime
-from funciones.funciones_clientes import seleccionar_cliente
+from custom_bikes.funciones.funciones_clientes import seleccionar_cliente
 
 def extender_garantia():
     

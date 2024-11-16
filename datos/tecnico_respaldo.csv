@@ -1,11 +1,11 @@
 rut_id,especialidad
-('12345678-9', 'Mecánica'),
-('23456789-0', 'Electrónica'),
-('34567890-1', 'Diseño'),
-('45678901-2', 'Mecánica'),
-('56789012-3', 'Electrónica'),
-('67890123-4', 'Diseño'),
-('78901234-5', 'Mecánica'),
-('89012345-6', 'Electrónica'),
-('90123456-7', 'Diseño'),
-('01234567-8', 'Mecánica')
+12345678-9,Mecánica
+23456789-0,Electrónica
+34567890-1,Diseño
+45678901-2,Mecánica
+56789012-3,Electrónica
+67890123-4,Diseño
+78901234-5,Mecánica
+89012345-6,Electrónica
+90123456-7,Diseño
+01234567-8,Mecánica

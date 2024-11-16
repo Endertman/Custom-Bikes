@@ -38,35 +38,18 @@ def menu_stock():
         else:
             print('Opción inválida') 
 
-def agregar_producto():
+def agregar_productos():
 
     print('Agregar Producto')
     
     while True:
        print("Ingrese los datos del nuevo producto: ")
        try:
-           sku = input('SKU del producto: ')
-           nombre = input('Nombre del producto: ')
-           stock = int(input('Cantidad en stock: '))
-           precio = float(input('Precio del producot: '))
-           
-           #confirmar la accion
-           confirmacion = input(f"¿Desea agregar este producto (SKU: {sku}, Nombre: {nombre}, Stock: {stock}, Precio: {precio})? (s/n)").lower
-           if confirmacion == 's':
-               agregar_producto(sku, nombre, stock, precio)
-               print("Producto agregago exitosamente.\n")
-           else:
-               print("Operación cancelada. No se agregó el producto.")
+            agregar_producto()
+
        except ValueError:
            print("Error: Verifique que el stock sea un número entero y el precio un valor númerico válido.")
-           
-           #Preguntar si desea agregar otro producto
-           continuar = input("¿Desea agregar otro producto? (s/n): ").lower
-           if continuar != 's':
-               print("Saliendo de la funcion de agregar producto.")
-               break
 
-        
 def eliminar_producto():
     print('Eliminar Prodcuto')
     

@@ -1,4 +1,4 @@
-from custom_bikes.funciones.funciones_garantias import extender_garantia, eliminar_garantia, buscar_garantia, mostrar_garantias
+from custom_bikes.funciones.funciones_garantias import extender_garantia, buscar_garantia, mostrar_garantias
 
 def menu_garantias():
    

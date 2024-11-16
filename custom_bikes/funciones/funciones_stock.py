@@ -1,7 +1,7 @@
 import sqlite3
 
 def agregar_producto():
-    conn = sqlite3.connect('custom_bikes\custom_bikes.db')
+    conn = sqlite3.connect('custom_bikes/custom_bikes.db')
     cursor = conn.cursor()
 
     print('Ingrese los datos del producto: ')
@@ -77,7 +77,7 @@ def agregar_producto():
     print('Producto agregado exitosamente.')
 
     try:
-        cursor.execute('''INSERT INTO almacen (sku, nombre, categoria, tipo, descuento_individual, stock, precio) VALUES (?, ?, ?, ?, ?, ?)''', (sku_producto, nombre_producto, categoria_producto, tipo_producto, descuento_individual, stock, precio))
+        cursor.execute('''INSERT INTO almacen (sku, nombre, categoria, tipo, descuento_individual, stock, precio) VALUES (?, ?, ?, ?, ?, ?, ?)''', (sku_producto, nombre_producto, categoria_producto, tipo_producto, descuento_individual, stock, precio))
         conn.commit()
         
     except sqlite3.Error as e:
@@ -87,7 +87,7 @@ def agregar_producto():
         conn.close()
 
 def eliminar_producto():
-    conn = sqlite3.connect('custom_bikes\custom_bikes.db')
+    conn = sqlite3.connect('custom_bikes/custom_bikes.db')
     cursor = conn.cursor()
 
     cursor.execute('SELECT * FROM almacen')
@@ -95,12 +95,16 @@ def eliminar_producto():
     for row in rows:
         print(row)
 
-    sku_producto = input('Ingrese el codigo del producto que desea eliminar: ')
+    sku_producto = input('Ingrese el código del producto que desea eliminar: ')
 
     try:
         cursor.execute('''DELETE FROM almacen WHERE sku = ?''', (sku_producto,))
-        conn.commit
-        print('Producto eliminado exitosamente.')
+        conn.commit() 
+
+        if cursor.rowcount > 0:
+            print('Producto eliminado exitosamente.')
+        else:
+            print('No se encontró el producto con ese SKU.')
 
     except sqlite3.Error as e:
         print("Error al eliminar el producto:", e)
@@ -109,50 +113,73 @@ def eliminar_producto():
         conn.close()
 
 def modificar_producto():
-    conn = sqlite3.connect('custom_bikes\custom_bikes.db')
+    conn = sqlite3.connect('custom_bikes/custom_bikes.db')
     cursor = conn.cursor()
-    
+
     cursor.execute('SELECT * FROM almacen')
     rows = cursor.fetchall()
-    
+
     for row in rows:
         print(row)
-    
-    sku_producto = input('Ingrese el codigo del producto: ')
-    
+
+    sku_producto = input('Ingrese el código del producto que desea modificar: ')
+
+    nuevo_nombre = input('Ingrese el nuevo nombre del producto: ')
+    nuevo_stock = int(input('Ingrese la nueva cantidad en stock: '))
+    nuevo_precio = float(input('Ingrese el nuevo precio del producto: '))
+
     try:
-        cursor.execute('''ALTER TABLE from almacen WHERE sku = ?''', (sku_producto,))
-        conn.commit
-        print('Producto modificado exitosamente')
-        
+        cursor.execute('''UPDATE almacen SET nombre = ?, stock = ?, precio = ? WHERE sku = ?''', 
+                       (nuevo_nombre, nuevo_stock, nuevo_precio, sku_producto))
+        conn.commit()
+
+        if cursor.rowcount > 0:
+            print('Producto modificado exitosamente.')
+        else:
+            print('No se encontró el producto con el SKU proporcionado.')
+
     except sqlite3.Error as e:
-        print('Error al eliminar el producto:')
-    
+        print('Error al modificar el producto:', e)
+
     finally:
         conn.close()
 
-
 def buscar_producto():
-    conn = sqlite3.connect('custom_bikes\custom_bikes.db')
+    conn = sqlite3.connect('custom_bikes/custom_bikes.db')
     cursor = conn.cursor()
     
     cursor.execute('SELECT * FROM almacen')
     rows = cursor.fetchall()
     
-    for row in rows:
-        print(row)
-        
-    sku_producto = input('Ingrese el codigo del producto: ')
+    if rows:
+        for row in rows:
+            print(row)
+    else:
+        print("No se encontraron productos en la base de datos.")
+    
+    sku_producto = input('Ingrese el codigo del producto que desea buscar: ')
     
     try:
         cursor.execute('''SELECT * FROM almacen WHERE sku = ?''', (sku_producto,))
-        conn.commit
-        print('Producto modificado exitosamente')
+        producto = cursor.fetchone()
+        
+        if producto:
+            print("\nProducto encontrado:")
+            print(f"SKU: {producto[0]}")
+            print(f"Nombre: {producto[1]}")
+            print(f"Categoria: {producto[2]}")
+            print(f"Tipo: {producto[3]}")
+            print(f"Descuento individual: {producto[4]}")
+            print(f"Stock: {producto[5]}")
+            print(f"Precio: {producto[6]}")
+        else:
+            print("Producto no encontrado.")
     
     except sqlite3.Error as e:
-        print('Error al eliminar el producto:')
+        print(f"Error al buscar el producto: {e}")
     
-    finally: conn.close()
+    finally:
+        conn.close()
 
 def mostrar_productos():
     conn = sqlite3.connect('custom_bikes\custom_bikes.db')

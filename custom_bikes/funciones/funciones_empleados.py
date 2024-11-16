@@ -1,12 +1,16 @@
 import sqlite3
+import os
 
 def agregar_empleados_csv():
     import csv
+    ruta_base = os.path.dirname(os.path.abspath(__file__))
+    ruta_csv_personas = os.path.join(ruta_base, '../../datos/personas_respaldo.csv')
+    ruta_csv_tecnicos = os.path.join(ruta_base, '../../datos/tecnico_respaldo.csv')
 
     conn = sqlite3.connect('custom_bikes/custom_bikes.db')
     cursor = conn.cursor()
 
-    with open('custom_bikes\datos\personas_respaldo.csv', 'r') as file:
+    with open(ruta_csv_personas, 'r') as file:
         reader = csv.reader(file)
         next(reader)  
 
@@ -28,7 +32,7 @@ def agregar_empleados_csv():
             except sqlite3.Error as e:
                 print("Error al insertar la persona", e)
 
-    with open('custom_bikes/datos/tecnico_respaldo.csv', 'r') as file:
+    with open(ruta_csv_tecnicos, 'r') as file:
         reader = csv.reader(file)
         next(reader)
 
@@ -41,10 +45,10 @@ def agregar_empleados_csv():
                                   VALUES (?, ?)''', (rut_id, especialidad))
 
                 conn.commit()
-                print(f'Cliente {rut_id} agregado exitosamente.')
+                print(f'Empleado {rut_id} agregado exitosamente.')
 
             except sqlite3.Error as e:
-                print("Error al insertar el cliente:", e)
+                print("Error al insertar al empleado:", e)
 
     conn.close()
 
@@ -66,7 +70,7 @@ def generar_empleado():
         cursor.execute('''INSERT INTO personas (rut_id, nombre, apellido, telefono, correo, direccion)
                           VALUES (?, ?, ?, ?, ?, ?)''', (rut_id, nombre, apellido, telefono, correo, direccion))
 
-        cursor.execute('''INSERT INTO tecnico (rut_id, especialidad)
+        cursor.execute('''INSERT INTO tecnicos (rut_id, especialidad)
                           VALUES (?, ?)''', (rut_id, especialidad))
 
         conn.commit()
@@ -188,5 +192,3 @@ def mostrar_tecnicos():
 
     finally:
         conn.close()
-
-

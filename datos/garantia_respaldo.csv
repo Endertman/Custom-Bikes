@@ -1,12 +1,12 @@
 id_pedido,fecha_inicio,fecha_fin,cobertura,condiciones,estado
-12345678-0,2024-10-3,2025-10-3,1 año de garantía,Cubre defectos de fabricación,Activo
-23456789-1,2024-10-13,2025-10-13,1 año de garantía,Cubre defectos de fabricación,Activo
-34567890-2,2024-10-20,2025-10-20,1 año de garantía,Cubre defectos de fabricación,Activo
-45678901-3,2024-10-29,2025-10-29,1 año de garantía,Cubre defectos de fabricación,Activo
-56789012-4,2024-11-5,2025-11-5,1 año de garantía,Cubre defectos de fabricación,Activo
-67890123-5,2024-11-7,2025-11-7,1 año de garantía,Cubre defectos de fabricación,Activo
-78901234-6,2024-11-16,2025-11-16,1 año de garantía,Cubre defectos de fabricación,Activo
-89012345-7,2024-11-26,2025-11-26,1 año de garantía,Cubre defectos de fabricación,Activo
-90123456-8,2024-12-22,2025-12-22,1 año de garantía,Cubre defectos de fabricación,Activo
-01234567-9,2024-12-24,2025-12-24,1 año de garantía,Cubre defectos de fabricación,Activo
-90123456-8,2024-12-30,2025-12-30,1 año de garantía,Cubre defectos de fabricación,Activo
+12345678-0,2024-10-3,2025-10-3,1 año de garantía,Cubre defectos de fabricación,1
+23456789-1,2024-10-13,2025-10-13,1 año de garantía,Cubre defectos de fabricación,1
+34567890-2,2024-10-20,2025-10-20,1 año de garantía,Cubre defectos de fabricación,1
+45678901-3,2024-10-29,2025-10-29,1 año de garantía,Cubre defectos de fabricación,1
+56789012-4,2024-11-5,2025-11-5,1 año de garantía,Cubre defectos de fabricación,1
+67890123-5,2024-11-7,2025-11-7,1 año de garantía,Cubre defectos de fabricación,1
+78901234-6,2024-11-16,2025-11-16,1 año de garantía,Cubre defectos de fabricación,1
+89012345-7,2024-11-26,2025-11-26,1 año de garantía,Cubre defectos de fabricación,1
+90123456-8,2024-12-22,2025-12-22,1 año de garantía,Cubre defectos de fabricación,1
+01234567-9,2024-12-24,2025-12-24,1 año de garantía,Cubre defectos de fabricación,1
+90123456-8,2024-12-30,2025-12-30,1 año de garantía,Cubre defectos de fabricación,1

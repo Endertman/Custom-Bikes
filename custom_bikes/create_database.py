@@ -1,7 +1,7 @@
 import sqlite3
 
 def crear_db():
-    conn = sqlite3.connect('custom_bikes.db')
+    conn = sqlite3.connect('custom_bikes/custom_bikes.db')
     cursor = conn.cursor()
 
     def crear_tabla_personas():
@@ -186,63 +186,8 @@ def crear_db():
     conn.close()
 
 def inserts():
-    conn = sqlite3.connect('custom_bikes.db')
+    conn = sqlite3.connect('custom_bikes/custom_bikes.db')
     cursor = conn.cursor()
-
-    def insert_personas():
-        cursor.execute('''INSERT INTO personas (rut_id, nombre, apellido, telefono, correo, direccion)
-            VALUES
-            ('12345678-9', 'Juan', 'Perez', 12345678, 'juan.perez@example.com', 'Calle 123'),
-            ('23456789-0', 'Maria', 'Gonzalez', 23456789, 'maria.gonzalez@example.com', 'Avenida 456'),
-            ('34567890-1', 'Pedro', 'Rodriguez', 34567890, 'pedro.rodriguez@example.com', 'Plaza 789'),
-            ('45678901-2', 'Ana', 'Lopez', 45678901, 'ana.lopez@example.com', 'Calle 321'),
-            ('56789012-3', 'Luis', 'Martinez', 56789012, 'luis.martinez@example.com', 'Avenida 654'),
-            ('67890123-4', 'Sofia', 'Garcia', 67890123, 'sofia.garcia@example.com', 'Plaza 987'),
-            ('78901234-5', 'Carlos', 'Sanchez', 78901234, 'carlos.sanchez@example.com', 'Calle 147'),
-            ('89012345-6', 'Laura', 'Hernandez', 89012345, 'laura.hernandez@example.com', 'Avenida 258'),
-            ('90123456-7', 'Diego', 'Diaz', 90123456, 'diego.diaz@example.com', 'Plaza 369'),
-            ('01234567-8', 'Valeria', 'Torres', 01234567, 'valeria.torres@example.com', 'Calle 753'),
-            ('12345678-0', 'Javier', 'Ramirez', 12345678, 'javier.ramirez@example.com', 'Avenida 951'),
-            ('23456789-1', 'Elena', 'Fernandez', 23456789, 'elena.fernandez@example.com', 'Plaza 147'),
-            ('34567890-2', 'Miguel', 'Gutierrez', 34567890, 'miguel.gutierrez@example.com', 'Calle 258'),
-            ('45678901-3', 'Carmen', 'Jimenez', 45678901, 'carmen.jimenez@example.com', 'Avenida 369'),
-            ('56789012-4', 'Ricardo', 'Perez', 56789012, 'ricardo.perez@example.com', 'Plaza 753'),
-            ('67890123-5', 'Isabel', 'Lopez', 67890123, 'isabel.lopez@example.com', 'Calle 147'),
-            ('78901234-6', 'Alejandro', 'Gonzalez', 78901234, 'alejandro.gonzalez@example.com', 'Avenida 258'),
-            ('89012345-7', 'Camila', 'Martinez', 89012345, 'camila.martinez@example.com', 'Plaza 369'),
-            ('90123456-8', 'Andres', 'Sanchez', 90123456, 'andres.sanchez@example.com', 'Calle 753'),
-            ('01234567-9', 'Lucia', 'Hernandez', 01234567, 'lucia.hernandez@example.com', 'Avenida 951')
-        ''')
-
-    def insert_tecnicos():
-        cursor.execute('''INSERT INTO tecnicos (rut_id, especialidad)
-            VALUES
-            ('12345678-9', 'Mecánica'),
-            ('23456789-0', 'Electrónica'),
-            ('34567890-1', 'Diseño'),
-            ('45678901-2', 'Mecánica'),
-            ('56789012-3', 'Electrónica'),
-            ('67890123-4', 'Diseño'),
-            ('78901234-5', 'Mecánica'),
-            ('89012345-6', 'Electrónica'),
-            ('90123456-7', 'Diseño'),
-            ('01234567-8', 'Mecánica')
-        ''')
-
-    def insert_clientes():
-        cursor.execute('''INSERT INTO clientes (rut_id, altura)
-            VALUES
-            ('12345678-0', 170),
-            ('23456789-1', 165),
-            ('34567890-2', 180),
-            ('45678901-3', 175),
-            ('56789012-4', 160),
-            ('67890123-5', 185),
-            ('78901234-6', 175),
-            ('89012345-7', 165),
-            ('90123456-8', 170),
-            ('01234567-9', 180)
-        ''')
 
     def insert_almacen():
         cursor.execute('''INSERT INTO almacen (sku, nombre, categoria, tipo, descuento_individual, stock, precio)
@@ -341,9 +286,6 @@ def inserts():
             ('CYBERMONDAY',0.10)
         ''')
 
-    insert_personas()
-    insert_tecnicos()
-    insert_clientes()
     insert_almacen()
     insert_codigos_descuentos()
 
