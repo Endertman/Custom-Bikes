@@ -84,6 +84,7 @@ Un diagrama detallado del esquema de la base de datos se incluye a continuación
 
 ```mermaid
 erDiagram
+    %% Entidades relacionadas con PERSONAS
     PERSONAS {
         TEXT rut_id PK
         TEXT nombre
@@ -92,24 +93,52 @@ erDiagram
         TEXT correo
         TEXT direccion
     }
+
     CLIENTES {
         TEXT rut_id PK
         INTEGER altura
     }
+
     TECNICOS {
         TEXT rut_id PK
         TEXT especialidad
     }
-    TECNICO_PEDIDO {
-        TEXT id_pedido PK
-        TEXT id_tecnico PK
-    }
+
+    %% Entidad relacionada con PEDIDO
     PEDIDO {
         TEXT id_pedido PK
         TEXT fecha_inicio_pedido
-        TEXT cliente
+        TEXT cliente FK
         TEXT fecha_entrega_pedido
     }
+
+    TECNICO_PEDIDO {
+        TEXT id_tecnico_pedido PK
+        TEXT id_pedido FK
+        TEXT id_tecnico FK
+    }
+
+    %% Relación de CLIENTES con PEDIDO
+    CLIENTES ||--o| PEDIDO : "realiza"
+
+    %% Relación de PERSONAS con CLIENTES y TECNICOS
+    PERSONAS ||--o| CLIENTES : "es cliente de"
+    PERSONAS ||--o| TECNICOS : "es técnico de"
+
+    %% Entidad COMPONENTES relacionada con PEDIDO y ALMACEN
+    COMPONENTES {
+        TEXT id_componente PK
+        TEXT marco_sku FK
+        TEXT transmision_sku FK
+        TEXT frenos_sku FK
+        TEXT ruedas_sku FK
+        TEXT neumaticos_sku FK
+        TEXT tija_sku FK
+        TEXT manillar_sku FK
+        TEXT pedales_sku FK
+        TEXT sillin_sku FK
+    }
+
     ALMACEN {
         TEXT sku PK
         TEXT nombre
@@ -119,49 +148,71 @@ erDiagram
         INTEGER stock
         INTEGER precio
     }
-    COMPONENTES {
-        TEXT id_pedido PK
-        TEXT marco_sku
-        TEXT transmision_sku
-        TEXT frenos_sku
-        TEXT ruedas_sku
-        TEXT neumaticos_sku
-        TEXT tija_sku
-        TEXT manillar_sku
-        TEXT pedales_sku
-        TEXT sillin_sku
-    }
+
+    %% Relación de COMPONENTES con ALMACEN
+    COMPONENTES ||--o| ALMACEN : "almacenados en"
+    PEDIDO ||--o| COMPONENTES : "contiene"
+
+    %% Entidad COTIZACION relacionada con PEDIDO y COTIZACION_CODIGO
     COTIZACION {
-        TEXT id_pedido PK
+        TEXT id_cotizacion PK
         INTEGER calculo_precio
+        TEXT id_pedido FK
     }
+
+    COTIZACION_CODIGO {
+        TEXT id_cotizacion FK
+        TEXT codigo_seleccionado FK
+    }
+
     CODIGOS_DESCUENTOS {
         TEXT codigo PK
         REAL porcentaje
     }
-    COTIZACION_CODIGO {
-        TEXT id_pedido PK
-        TEXT codigo_seleccionado PK
-    }
+
+    %% Relación de COTIZACION con PEDIDO y COTIZACION_CODIGO
+    PEDIDO ||--o| COTIZACION : "genera"
+    COTIZACION ||--o| COTIZACION_CODIGO : "aplica"
+    COTIZACION_CODIGO ||--o| CODIGOS_DESCUENTOS : "usa"
+
+    %% Entidad BICICLETA relacionada con PEDIDO
     BICICLETA {
-        TEXT id_pedido PK
+        TEXT id_bicicleta PK
         INTEGER precio
+        TEXT id_pedido FK
+        TEXT id_componente FK
     }
+
+    %% Relación de BICICLETA con BOLETA
+    BICICLETA ||--|{ BOLETA : "detalla"
+    PEDIDO ||--|{ BICICLETA : "produce"
+
+    %% Entidad BOLETA relacionada con TRANSACCIONES
     TRANSACCIONES {
         TEXT id_pago PK
         INTEGER monto_pagado
+        TEXT id_boleta FK
     }
+
     BOLETA {
-        TEXT id_pedido PK
+        TEXT id_boleta PK
         INTEGER precio_final
-        INTEGER id_pago
+        TEXT id_pedido FK
     }
+
+    %% Relación de BOLETA con TRANSACCIONES
+    BOLETA ||--o| TRANSACCIONES : "concreta"
+
+    %% Entidad HISTORICO_PEDIDOS relacionada con PEDIDO y GARANTIA
     HISTORICO_PEDIDOS {
-        TEXT id_pedido PK
+        TEXT id_historico PK
+        TEXT id_pedido FK
         TEXT fecha_entrega_pedido
     }
+
     GARANTIA {
-        TEXT id_pedido PK
+        TEXT id_garantia PK
+        TEXT id_pedido FK
         TEXT fecha_inicio
         TEXT fecha_fin
         TEXT cobertura
@@ -169,18 +220,10 @@ erDiagram
         BLOB estado
     }
 
-    PERSONAS ||--o{ CLIENTES : "relación"
-    PERSONAS ||--o{ TECNICOS : "relación"
-    CLIENTES ||--o{ PEDIDO : "realiza"
-    TECNICOS ||--o{ TECNICO_PEDIDO : "asigna"
-    PEDIDO ||--o{ TECNICO_PEDIDO : "tiene"
-    PEDIDO ||--o{ COMPONENTES : "relación"
-    COMPONENTES ||--o{ COTIZACION : "genera"
-    COTIZACION ||--o{ COTIZACION_CODIGO : "aplica"
-    COTIZACION ||--o{ BICICLETA : "relación"
-    BICICLETA ||--o{ BOLETA : "genera"
-    BOLETA ||--o{ TRANSACCIONES : "relación"
-    PEDIDO ||--o{ HISTORICO_PEDIDOS : "archiva"
-    HISTORICO_PEDIDOS ||--o{ GARANTIA : "relación"
-    ALMACEN ||--o{ COMPONENTES : "proporciona"
+    %% Relación de HISTORICO_PEDIDOS con PEDIDO y GARANTIA
+    PEDIDO ||--|{ HISTORICO_PEDIDOS : "es parte de"
+    HISTORICO_PEDIDOS ||--|{ GARANTIA : "tiene"
 
+    %% Relación de TECNICO_PEDIDO con PEDIDO y TECNICOS
+    TECNICO_PEDIDO ||--o| PEDIDO : "apoya"
+    TECNICO_PEDIDO ||--o| TECNICOS : "es asignado a"
