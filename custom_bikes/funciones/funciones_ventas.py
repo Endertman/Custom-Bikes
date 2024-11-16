@@ -1,6 +1,6 @@
 import sqlite3
 import csv
-from funciones_pedido import id_pedido
+from custom_bikes.funciones.funciones_pedido import id_pedido
 
 def agregar_venta_csv():
     conn = sqlite3.connect('custom_bikes/custom_bikes.db')
@@ -52,9 +52,9 @@ def agregar_venta_csv():
                     except sqlite3.Error as e:
                         print(f"Error al agregar los componentes del pedido {pedido_id}: {e}")
                 
-                with open ()
-                conn.commit()
-                print(f'Componentes para el pedido {pedido_id} agregados exitosamente.')
+                # with open ():
+                # conn.commit()
+                # print(f'Componentes para el pedido {pedido_id} agregados exitosamente.')
    
     except Exception as e:
         print(f"Error general al procesar los archivos: {e}")

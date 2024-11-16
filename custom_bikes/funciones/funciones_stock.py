@@ -108,8 +108,6 @@ def eliminar_producto():
     finally:
         conn.close()
 
-
-
 def modificar_producto():
     conn = sqlite3.connect('custom_bikes\custom_bikes.db')
     cursor = conn.cursor()

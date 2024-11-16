@@ -1,8 +1,4 @@
-from custom_bikes.funciones.funciones_stock import agregar_producto
-from custom_bikes.funciones.funciones_stock import eliminar_producto
-from custom_bikes.funciones.funciones_stock import modificar_producto
-from custom_bikes.funciones.funciones_stock import buscar_producto
-from custom_bikes.funciones.funciones_stock import mostrar_productos
+from custom_bikes.funciones.funciones_stock import agregar_producto, eliminar_producto, modificar_producto, buscar_producto, mostrar_productos
 
 def menu_stock():
     while True:
