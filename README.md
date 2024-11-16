@@ -175,7 +175,7 @@ erDiagram
     COTIZACION ||--o| COTIZACION_CODIGO : "aplica"
     COTIZACION_CODIGO ||--o| CODIGOS_DESCUENTOS : "usa"
 
-    %% Entidad BICICLETA relacionada con PEDIDO
+    %% Entidad BICICLETA relacionada con COTIZACION
     BICICLETA {
         TEXT id_bicicleta PK
         INTEGER precio
@@ -185,7 +185,7 @@ erDiagram
 
     %% Relación de BICICLETA con BOLETA
     BICICLETA ||--|{ BOLETA : "detalla"
-    PEDIDO ||--|{ BICICLETA : "produce"
+    COTIZACION ||--|{ BICICLETA : "produce"
 
     %% Entidad BOLETA relacionada con TRANSACCIONES
     TRANSACCIONES {
