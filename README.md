@@ -127,7 +127,7 @@ erDiagram
 
     %% Entidad COMPONENTES relacionada con PEDIDO y ALMACEN
     COMPONENTES {
-        TEXT id_componente PK
+        TEXT id_pedido PK
         TEXT marco_sku FK
         TEXT transmision_sku FK
         TEXT frenos_sku FK
