@@ -1,9 +1,86 @@
-# Proyecto de Bases de Datos
-### Modelo de Base de Datos Relacional
-#### Diseño General del Modelo
-Puedes ver el diseño general del modelo de base de datos https://dbdesigner.page.link/7JCT5yN8vZBhcQJr5
+# Sistema de Base de Datos para CustomBikes S.A.
 
-## Esquema de la Base de Datos
+## Contexto
+CustomBikes S.A. es una empresa dedicada a la comercialización de bicicletas altamente personalizadas. Ofrecemos a nuestros clientes la posibilidad de elegir cada componente de su bicicleta, adaptándonos a sus preferencias y presupuesto. Desde el tipo de marco, ruedas y frenos, hasta detalles como materiales y colores, cada bicicleta es única y fabricada a la medida.
+
+Para gestionar este nivel de personalización, es esencial contar con un sistema de base de datos eficiente que registre y administre pedidos, componentes, descuentos y el ensamblaje de bicicletas bajo las reglas de negocio de la empresa.
+
+Este proyecto propone un sistema de base de datos para:
+- Registrar los pedidos.
+- Asignar técnicos especializados para el ensamblaje.
+- Generar documentos de pago.
+- Registrar las garantías de las bicicletas vendidas.
+- Proveer herramientas de consulta y análisis para la toma de decisiones estratégicas.
+
+## Objetivo
+El sistema busca gestionar eficazmente la personalización de bicicletas, permitiendo a los clientes elegir componentes específicos y aplicar descuentos, cumpliendo con un plazo de entrega máximo de 60 días. Además, el sistema generará documentos de pago detallados y llevará un registro histórico de pedidos, técnicos y garantías.
+
+---
+
+## Funcionalidades
+### Reglas Generales
+1. **Personalización de componentes:**
+   - Cada bicicleta es única, ensamblada con componentes específicos seleccionados por el cliente.
+   - Los componentes deben estar registrados como productos independientes en la base de datos.
+
+2. **Gestión de descuentos:**
+   - Posibilidad de aplicar descuentos individuales a componentes o globales a través de códigos promocionales.
+
+3. **Plazo de entrega:**
+   - Todas las bicicletas deben entregarse en un máximo de **60 días**.
+
+4. **Asignación de técnicos:**
+   - Los pedidos se asignan a técnicos especialistas y, en caso necesario, a múltiples técnicos.
+
+5. **Documentos de pago:**
+   - Generación automática de facturas y comprobantes que detallen el monto, fechas y estado del pago.
+
+6. **Garantías:**
+   - Registro detallado de las garantías de las bicicletas vendidas, incluyendo cobertura y condiciones específicas.
+
+7. **Historial de pedidos:**
+   - Seguimiento de pedidos anteriores para análisis de tendencias y consultas futuras.
+
+### Requerimientos Específicos
+1. **Consulta de pedidos por cliente y fechas:**
+   - Posibilidad de buscar pedidos realizados por un cliente en un rango de fechas.
+
+2. **Componentes más solicitados:**
+   - Informes que identifiquen los componentes más demandados.
+
+3. **Bicicletas vendidas y sus garantías:**
+   - Listar bicicletas junto con los detalles de sus garantías.
+
+4. **Técnicos y bicicletas ensambladas:**
+   - Relación entre técnicos y los pedidos que han ensamblado.
+
+---
+
+## Conceptos Técnicos
+1. **Base de datos:**
+   - Sistema organizado para almacenar y acceder eficientemente a la información.
+
+2. **Tablas:**
+   - Las tablas almacenan la información en filas (registros) y columnas (atributos).
+
+3. **Claves Primarias (PK):**
+   - Identificadores únicos que garantizan que cada registro sea único en una tabla.
+
+4. **Claves Foráneas (FK):**
+   - Relaciones entre tablas, vinculando datos como pedidos con clientes.
+
+---
+
+## Modelo de Datos
+El sistema utiliza un modelo relacional, con las siguientes tablas principales:
+
+- **Personas, Clientes, Técnicos:** Manejan los datos personales y roles de cada individuo.
+- **Pedido y Componentes:** Gestionan las solicitudes de los clientes y los elementos seleccionados.
+- **Almacén:** Contiene los detalles de los componentes disponibles.
+- **Cotización y Descuentos:** Calculan los precios y aplican descuentos a nivel individual o global.
+- **Histórico y Garantías:** Registran el estado de las bicicletas ensambladas y su seguimiento postventa.
+
+Un diagrama detallado del esquema de la base de datos se incluye a continuación:
 
 ```mermaid
 erDiagram
