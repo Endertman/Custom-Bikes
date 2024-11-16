@@ -3,6 +3,7 @@ from custom_bikes.funciones.funciones_stock import eliminar_producto
 from custom_bikes.funciones.funciones_stock import modificar_producto
 from custom_bikes.funciones.funciones_stock import buscar_producto
 from custom_bikes.funciones.funciones_stock import mostrar_productos
+from custom_bikes import menu_principal
 
 
 def menu_stock():
@@ -162,3 +163,77 @@ def modificar_producto():
             if continuar != 's':
                 print("\nSaliendo de la función modificar producto.\n")
                 break
+
+def buscar_producto():
+    print('Buscar Producto')
+
+    while True:
+        #Solicitar al usuario el SKU del producto a buscar
+        sku = input("\nIngrese el SKU del producto que desea buscar: ").strip()
+
+        #Verificar si el producto existe en la base de datos
+        producto_encontrado = buscar_producto(sku)
+
+        if producto_encontrado:
+            # Mostrar los detalles del producto encontrado
+            print("\nProducto Encontrado:")
+            print(f"SKU: {sku}")
+            print(f"Nombre: {producto_encontrado['nombre']}")
+            print(f"Stock: {producto_encontrado['stock']}")
+            print(f"Precio: {producto_encontrado['precion']}\n")
+        
+        else:
+            # Mensaje en caso de no encontrar nada
+            print("\nError: No se encontró un producto con ese SKU.\n")
+        
+        # Preguntar para encontrar otro producto
+        continuar = input("¿Desea buscar otro producto? (s/n): ")
+        if continuar != 's':
+            print("\nSaliendo de la función buscar producto.\n")
+            break
+
+def mostrar_productos():
+    print('Mostrar Productos')
+
+    while True:
+        #Obtener la lista de productos desde la base de datos
+        productos = mostrar_productos()
+
+        if productos:
+            # Detalles de los productos
+             print("\nProductos disponibles:")
+             print(f"{'SKU':<15}{'Nombre':<20}{'Stock':<10}{'Precio':<10}")
+             print("-" * 55)
+             for producto in productos:
+                print(f"{producto['sku']:<15}{producto['nombre']:<20}{producto['stock']:<10}{producto['precio']:<10}")
+                print("-" * 55)  
+        else:
+            # en caso de que no haya productos
+            print("\nNo hay productos registrados en la base de datos.\n")
+
+        # Preguntar si desea volver a mostrar los productos
+        continuar = input("¿Desea volver a mostrar la lista de productos? (s/n): ").lower()
+        if continuar != 's':
+            print("\nSaliendo de la función mostrar productos.\n")
+            break   
+
+def volver_menu_principal():
+    print('Volver al Menú Principal')
+
+    while True:
+        print("\nEstá a punto de regresar al menú principal.")
+
+        confirmacion = input("¿Desea continuar? (s/n): ").lower()
+
+        if confirmacion == 's':
+            print("\nRegresando al menú principal...\n")
+            menu_principal()
+            break
+        
+        elif confirmacion == 'n':
+            print("\nOperación cancelada. Permanecerá en la función actual.\n")
+            break
+        
+        else: 
+            print("\nError: Por favor, ingrese 's' para continuar o 'n' para cancelar.\n")
+            
