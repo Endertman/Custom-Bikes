@@ -1,4 +1,4 @@
-from custom_bikes.funciones.funciones_empleados import agregar_empleados_csv, generar_empleado, eliminar_empleado, modificar_empleado, buscar_empleado
+from custom_bikes.funciones.funciones_empleados import agregar_empleados_csv, generar_empleado, eliminar_empleado, modificar_empleado, buscar_empleado, mostrar_tecnicos, agregar_tecnico_pedido
 
 def menu_empleados():
    
@@ -8,7 +8,8 @@ def menu_empleados():
         print('3. Modificar empleado')
         print('4. Buscar empleado')
         print('5. Mostrar empleados')
-        print('6. Volver al menú principal')
+        print('6. Agregar tecnico a pedido')
+        print('7. Volver al menú principal')
 
         seleccion = int(input('Seleccione una opción: '))
 
@@ -30,9 +31,13 @@ def menu_empleados():
 
         elif seleccion == 5:
             print('Mostrar empleados')
-            mostrar_empleados()
+            mostrar_tecnicos()
 
         elif seleccion == 6:
+            print('Agregar tecnico a pedido')
+            agregar_tecnico_pedido()
+
+        elif seleccion == 7:
             print('Volver al menú principal')
             break
 

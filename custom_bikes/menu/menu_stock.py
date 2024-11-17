@@ -1,54 +1,47 @@
-from custom_bikes.funciones.funciones_stock import agregar_producto, eliminar_producto, modificar_producto, buscar_producto, mostrar_productos
+from custom_bikes.funciones.funciones_stock import agregar_producto, eliminar_producto, modificar_producto, buscar_producto, mostrar_productos, agregar_productos_csv
 
 def menu_stock():
     while True:
         print('1. Agregar producto')
-        print('2. Eliminar producto')
-        print('3. Modificar producto')
-        print('4. Buscar producto')
-        print('5. Mostrar stock')
-        print('6. Volver al menú principal')
+        print('2. Agregar productos (csv)')
+        print('3. Eliminar producto')
+        print('4. Modificar producto')
+        print('5. Buscar producto')
+        print('6. Mostrar stock')
+        print('7. Volver al menú principal')
 
         seleccion = int(input('Seleccione una opción: '))
         
         if seleccion == 1:
             print('Agregar producto')
-            agregar_producto() 
-        
+            agregar_producto()
+
         elif seleccion == 2:
+            print('Agregar productos (csv)')
+            agregar_productos_csv()
+        
+        elif seleccion == 3:
             print('Eliminar producto')
             eliminar_producto()
         
-        elif seleccion == 3:
+        elif seleccion == 4:
             print('Modificar producto')
             modificar_producto()
             
-        elif seleccion == 4:
+        elif seleccion == 5:
             print('Buscar producto')
             buscar_producto()
         
-        elif seleccion == 5:
+        elif seleccion == 6:
             print('Mostrar stock')
             mostrar_productos()
         
-        elif seleccion == 6:
+        elif seleccion == 7:
             print('Volver al menú principal')
             break
         
         else:
             print('Opción inválida') 
-
-def agregar_productos():
-
-    print('Agregar Producto')
-    
-    while True:
-       print("Ingrese los datos del nuevo producto: ")
-       try:
-            agregar_producto()
-
-       except ValueError:
-           print("Error: Verifique que el stock sea un número entero y el precio un valor númerico válido.")
 
 def eliminar_producto():
     print('Eliminar Prodcuto')

@@ -1,14 +1,7 @@
 import sqlite3, csv, random, string, datetime, os
 from custom_bikes.funciones.funciones_pedido import id_pedido
 from custom_bikes.funciones.funciones_clientes import insert_cliente, seleccionar_cliente
-
-import sqlite3
-import csv
-import os
-
-import sqlite3
-import csv
-import os
+from custom_bikes.funciones.funciones_empleados import seleccionar_tecnico
 
 def agregar_venta_csv():
 
@@ -156,11 +149,13 @@ def agregar_venta_cliente_nuevo():
     fecha_inicio_pedido = datetime.date.today()
     fecha_entrega_pedido = fecha_inicio_pedido + datetime.timedelta(days=30)
     id_pago = generar_codigo_transaccion(longitud=8)
+    tecnico = seleccionar_tecnico()
     
     precio_final = total_precio
 
     cursor.execute('''INSERT INTO pedido (id_pedido, fecha_inicio_pedido, cliente, fecha_entrega_pedido) VALUES (?, ?, ?, ?)''', (pedido_id, fecha_inicio_pedido, rut_id, fecha_entrega_pedido))
     cursor.execute('''INSERT INTO cotizacion (id_pedido, calculo_precio) VALUES (?, ?)''', (pedido_id, total_precio))
+    cursor.execute('''INSERT INTO tecnico_pedido (id_pedido, id_tecnico) VALUES (?, ?)''', (pedido_id, tecnico))
 
     codigo_descuento = 0
     codigo_descuento = input("Ingrese el código de descuento (si no tiene, presione Enter): ")
@@ -200,11 +195,13 @@ def agregar_venta_cliente_existente():
     fecha_inicio_pedido = datetime.date.today()
     fecha_entrega_pedido = fecha_inicio_pedido + datetime.timedelta(days=30)
     id_pago = generar_codigo_transaccion(longitud=8)
+    tecnico = seleccionar_tecnico()
     
     precio_final = total_precio
 
     cursor.execute('''INSERT INTO pedido (id_pedido, fecha_inicio_pedido, cliente, fecha_entrega_pedido) VALUES (?, ?, ?, ?)''', (pedido_id, fecha_inicio_pedido, rut_id, fecha_entrega_pedido))
     cursor.execute('''INSERT INTO cotizacion (id_pedido, calculo_precio) VALUES (?, ?)''', (pedido_id, total_precio))
+    cursor.execute('''INSERT INTO tecnico_pedido (id_pedido, id_tecnico) VALUES (?, ?)''', (pedido_id, tecnico))
     
     codigo_descuento = input("Ingrese el código de descuento (si no tiene, presione Enter): ")
     if codigo_descuento:

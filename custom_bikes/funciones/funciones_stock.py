@@ -1,4 +1,4 @@
-import sqlite3
+import sqlite3, os
 
 def agregar_producto():
     conn = sqlite3.connect('custom_bikes/custom_bikes.db')
@@ -86,6 +86,33 @@ def agregar_producto():
     finally:    
         conn.close()
 
+def agregar_productos_csv():
+    ruta_base = os.path.dirname(os.path.abspath(__file__))
+    ruta_csv_stock = os.path.join(ruta_base, '../../datos/almacen_respaldo.csv')
+
+    conn = sqlite3.connect('custom_bikes/custom_bikes.db')
+    cursor = conn.cursor()
+
+    with open(ruta_csv_stock, 'r') as file:
+        next(file)
+        for line in file:
+            data = line.strip().split(',')
+            sku_producto = data[0]
+            nombre_producto = data[1]
+            categoria_producto = data[2]
+            tipo_producto = data[3]
+            descuento_individual = int(data[4])
+            stock = int(data[5])
+            precio = int(data[6])
+
+            try:
+                cursor.execute('''INSERT INTO almacen (sku, nombre, categoria, tipo, descuento_individual, stock, precio) VALUES (?, ?, ?, ?, ?, ?, ?)''', (sku_producto, nombre_producto, categoria_producto, tipo_producto, descuento_individual, stock, precio))
+                conn.commit()
+                print(f"Producto {sku_producto} agregado exitosamente.")
+
+            except sqlite3.Error as e:
+                print("Error al insertar el producto:", e)
+            
 def eliminar_producto():
     conn = sqlite3.connect('custom_bikes/custom_bikes.db')
     cursor = conn.cursor()

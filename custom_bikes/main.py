@@ -2,6 +2,7 @@ from custom_bikes.menu.menu_ventas import menu_ventas
 from custom_bikes.menu.menu_garantias import menu_garantias
 from custom_bikes.menu.menu_stock import menu_stock
 from custom_bikes.menu.menu_empleados import menu_empleados
+from custom_bikes.menu.menu_codigos_descuento import menu_codigos_descuento
 
 def menu_principal():
     while True:
@@ -10,7 +11,8 @@ def menu_principal():
         print('2. Garantías')
         print('3. Empleados')
         print('4. Stock')
-        print('5. Salir')
+        print('5. Códigos de descuento')
+        print('6. Salir')
 
         seleccion = int(input('Seleccione una opción: '))
     
@@ -27,6 +29,9 @@ def menu_principal():
             menu_stock()
 
         elif seleccion == 5:
+            menu_codigos_descuento()
+
+        elif seleccion == 6:
             print('Saliendo...')
             break
         

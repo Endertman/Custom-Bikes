@@ -1,5 +1,4 @@
-import sqlite3
-import os
+import sqlite3, os
 
 def insert_cliente():
     conn = sqlite3.connect('custom_bikes/custom_bikes.db')
@@ -29,6 +28,7 @@ def insert_cliente():
     
     finally:
         conn.commit()
+        conn.close()
     
     return rut_id
 

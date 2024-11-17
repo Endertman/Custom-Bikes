@@ -16,3 +16,24 @@ def id_pedido(rut_id):
 
     conn.close()
     return id_pedido
+
+def seleccionar_pedido():
+    conn = sqlite3.connect('custom_bikes/custom_bikes.db')
+    cursor = conn.cursor()
+
+    cursor.execute("SELECT * FROM pedido")
+    row = cursor.fetchall()
+    for row in row:
+        print(row)
+
+    pedido_id = input("Ingrese el ID del pedido: ")
+
+    cursor.execute("SELECT * FROM pedido WHERE id_pedido = ?", (pedido_id,))
+    pedido = cursor.fetchone()
+
+    if pedido:
+        print(f"Pedido encontrado: {pedido[0]}")
+        return pedido_id
+    else:
+        print("Pedido no encontrado.")
+        return  

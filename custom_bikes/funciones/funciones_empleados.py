@@ -1,5 +1,5 @@
-import sqlite3
-import os
+import sqlite3, os
+from custom_bikes.funciones.funciones_pedido import seleccionar_pedido
 
 def agregar_empleados_csv():
     import csv
@@ -192,3 +192,38 @@ def mostrar_tecnicos():
 
     finally:
         conn.close()
+
+def agregar_tecnico_pedido():
+    pedido = seleccionar_pedido()
+    tecnico = seleccionar_tecnico()
+
+    conn = sqlite3.connect('custom_bikes/custom_bikes.db')
+    cursor = conn.cursor()
+
+    cursor.execute('''INSERT INTO tecnicos_pedido (id_pedido, rut_id)
+                      VALUES (?, ?)''', (pedido, tecnico))
+
+    conn.commit()
+    conn.close()
+
+def seleccionar_tecnico():
+    conn = sqlite3.connect('custom_bikes/custom_bikes.db')
+    cursor = conn.cursor()
+
+    cursor.execute("SELECT personas.rut_id, personas.nombre, personas.apellido FROM tecnicos INNER JOIN personas ON tecnicos.rut_id = personas.rut_id")
+    row = cursor.fetchall()
+    for row in row:
+        print(row)
+
+    tecnico_id = input("Ingrese el RUT del tecnico: ")
+
+    cursor.execute("SELECT * FROM personas WHERE rut_id = ?", (tecnico_id,))
+    tecnico = cursor.fetchone()
+    tecnico_id = tecnico[0]
+
+    if tecnico:
+        print(f"Tecnico encontrado: {tecnico[1]} {tecnico[2]}")
+        return tecnico_id
+    else:
+        print("Tecnico no encontrado.")
+        return
