@@ -1,14 +1,4 @@
 rut_id,nombre,apellido,telefono,correo,direccion
-12345678-9, Juan, Perez, 12345678, juan.perez@example.com, Calle 123
-23456789-0, Maria, Gonzalez, 23456789, maria.gonzalez@example.com, Avenida 456
-34567890-1, Pedro, Rodriguez, 34567890, pedro.rodriguez@example.com, Plaza 789
-45678901-2, Ana, Lopez, 45678901, ana.lopez@example.com, Calle 321
-56789012-3, Luis, Martinez, 56789012, luis.martinez@example.com, Avenida 654
-67890123-4, Sofia, Garcia, 67890123, sofia.garcia@example.com, Plaza 987
-78901234-5, Carlos, Sanchez, 78901234, carlos.sanchez@example.com, Calle 147
-89012345-6, Laura, Hernandez, 89012345, laura.hernandez@example.com, Avenida 258
-90123456-7, Diego, Diaz, 90123456, diego.diaz@example.com, Plaza 369
-01234567-8, Valeria, Torres, 01234567, valeria.torres@example.com, Calle 753
 12345678-0, Javier, Ramirez, 12345678, javier.ramirez@example.com, Avenida 951
 23456789-1, Elena, Fernandez, 23456789, elena.fernandez@example.com, Plaza 147
 34567890-2, Miguel, Gutierrez, 34567890, miguel.gutierrez@example.com, Calle 258

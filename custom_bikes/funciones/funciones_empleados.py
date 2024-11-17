@@ -4,7 +4,7 @@ import os
 def agregar_empleados_csv():
     import csv
     ruta_base = os.path.dirname(os.path.abspath(__file__))
-    ruta_csv_personas = os.path.join(ruta_base, '../../datos/personas_respaldo.csv')
+    ruta_csv_personas = os.path.join(ruta_base, '../../datos/personas_empleados_respaldo.csv')
     ruta_csv_tecnicos = os.path.join(ruta_base, '../../datos/tecnico_respaldo.csv')
 
     conn = sqlite3.connect('custom_bikes/custom_bikes.db')

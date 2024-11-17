@@ -35,7 +35,7 @@ def insert_cliente():
 def agregar_cliente_csv():
     import csv
     ruta_base = os.path.dirname(os.path.abspath(__file__))
-    ruta_csv_personas = os.path.join(ruta_base, '../../datos/personas_respaldo.csv')
+    ruta_csv_personas = os.path.join(ruta_base, '../../datos/personas_clientes_respaldo.csv')
     ruta_csv_cliente = os.path.join(ruta_base, '../../datos/cliente_respaldo.csv')
 
     conn = sqlite3.connect('custom_bikes/custom_bikes.db')
@@ -96,12 +96,13 @@ def seleccionar_cliente():
 
     cursor.execute("SELECT * FROM personas WHERE rut_id = ?", (rut_id,))
     cliente = cursor.fetchone()
+    rut_id = cliente[0]
 
     conn.close()
 
     if cliente:
         print(f"Cliente encontrado: {cliente[1]} {cliente[2]}")  
-        return cliente
+        return rut_id
     else:
         print("Cliente no encontrado.")
-        return None  
+        return 

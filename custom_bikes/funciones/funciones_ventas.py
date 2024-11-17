@@ -11,6 +11,7 @@ import csv
 import os
 
 def agregar_venta_csv():
+
     ruta_base = os.path.dirname(os.path.abspath(__file__))
     ruta_csv_pedidos = os.path.join(ruta_base, '../../datos/pedido_respaldo.csv')
     ruta_csv_tecnico_pedido = os.path.join(ruta_base, '../../datos/tecnico_pedido_respaldo.csv')
@@ -99,6 +100,7 @@ def agregar_venta_csv():
 
                                 cursor.execute('''INSERT INTO bicicleta (id_pedido, precio) VALUES (?, ?)''', (pedido_id, precio_final))
                                 cursor.execute('''INSERT INTO cotizacion_codigo (id_pedido, codigo_seleccionado) VALUES (?, ?)''', (pedido_id, codigo))
+                                cursor.execute('''INSERT INTO cotizacion (id_pedido, calculo_precio) VALUES (?, ?)''', (pedido_id, total_precio))
                                 cursor.execute('''INSERT INTO boleta (id_pedido, precio_final, id_pago) VALUES (?, ?, ?)''', (pedido_id, precio_final, id_pago))
                                 cursor.execute('''INSERT INTO transacciones (id_pago, monto_pagado) VALUES (?, ?)''', (id_pago, precio_final))
                                 conn.commit()
@@ -142,8 +144,7 @@ def agregar_venta_csv():
 
     finally:
         conn.close()
-
-
+        
 def agregar_venta_cliente_nuevo():
     conn = sqlite3.connect('custom_bikes/custom_bikes.db')
     cursor = conn.cursor()
@@ -196,9 +197,8 @@ def agregar_venta_cliente_existente():
     id_pago = generar_codigo_transaccion(longitud=8)
 
     cursor.execute('''INSERT INTO pedido (id_pedido, fecha_inicio_pedido, cliente, fecha_entrega_pedido) VALUES (?, ?, ?, ?)''', (pedido_id, fecha_inicio_pedido, rut_id, fecha_entrega_pedido))
-    cursor.execute('''INSERT INTO cotizacion (id_pedido, total_precio) VALUES (?, ?)''', (pedido_id, total_precio))
-    cursor.execute('''INSERT INTO bicicleta (id_pedido, precio) VALUES (?, ?)''', (pedido_id, precio_final))
-
+    cursor.execute('''INSERT INTO cotizacion (id_pedido, calculo_precio) VALUES (?, ?)''', (pedido_id, total_precio))
+    
     codigo_descuento = input("Ingrese el código de descuento (si no tiene, presione Enter): ")
     if codigo_descuento:
         cursor.execute('''SELECT porcentaje FROM codigos_descuentos WHERE codigo = ?''', (codigo_descuento,))
@@ -211,9 +211,9 @@ def agregar_venta_cliente_existente():
             print("Código de descuento no válido.")
             precio_final = total_precio
 
+    cursor.execute('''INSERT INTO bicicleta (id_pedido, precio) VALUES (?, ?)''', (pedido_id, precio_final))
     cursor.execute('''INSERT INTO boleta (id_pedido, precio_final, id_pago) VALUES (?, ?, ?)''', (pedido_id, precio_final, id_pago))
     cursor.execute('''INSERT INTO transaciones (id_pago, monto_pagado) VALUES (?, ?)''', (id_pago, precio_final))
-
     cursor.execute('''INSERT INTO historico_pedido (id_pedido, fecha_entrega_pedido) VALUES (?, ?)''', (pedido_id, fecha_entrega_pedido))
     cursor.execute('''INSERT INTO garantia (id_pedido, fecha_inicio, fecha_fin, cobertura, condiciones, estado) VALUES (?, ?, ?, ?, ?, ?)''', (pedido_id, fecha_inicio_pedido, fecha_entrega_pedido, 'Cobertura por defecto', 'Condiciones por defecto', 'En proceso'))
 
