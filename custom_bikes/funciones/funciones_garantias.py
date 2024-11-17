@@ -24,16 +24,29 @@ def extender_garantia():
         for garantia in garantias:
             print(f'{garantia[0]} | {garantia[1]} | {garantia[2]} | {garantia[3]}')
 
-        id_pedido = int(input('Ingrese el ID del pedido para extender la garantía: '))
+        id_pedido = input('Ingrese el ID del pedido para extender la garantía: ')
 
-        cursor.execute(''' SELECT id_pedido FROM garantia WHERE id_pedido = ?''', (id_pedido, ))
+        cursor.execute(''' 
+            SELECT id_pedido, fecha_fin 
+            FROM garantia 
+            WHERE id_pedido = ? 
+        ''', (id_pedido, ))
         garantia_seleccionada = cursor.fetchone()
 
         if not garantia_seleccionada:
             print('El pedido no tiene una garantía asociada.')
             return
         
-        fecha_fin_actual = datetime.datetime.strptime(garantia_seleccionada[1], '%Y-%m-%d').date()
+        if garantia_seleccionada[1] is None:
+            print("La garantía seleccionada no tiene una fecha de fin válida.")
+            return
+
+        try:
+            fecha_fin_actual = datetime.datetime.strptime(garantia_seleccionada[1], '%Y-%m-%d').date()
+        except ValueError:
+            print("La fecha de fin de la garantía tiene un formato incorrecto.")
+            return
+        
         dias_extension = int(input('Ingrese la cantidad de días a extender la garantía: '))
         nueva_fecha_fin = fecha_fin_actual + datetime.timedelta(days=dias_extension)
 

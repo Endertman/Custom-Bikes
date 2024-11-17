@@ -2,7 +2,7 @@ import sqlite3
 import os
 
 def insert_cliente():
-    conn = sqlite3.connect('custom_bikes\custom_bikes.db')
+    conn = sqlite3.connect('custom_bikes/custom_bikes.db')
     cursor = conn.cursor()
 
     print('Ingrese los datos del cliente:')
@@ -18,19 +18,19 @@ def insert_cliente():
     try:
         cursor.execute('''INSERT INTO personas (rut_id, nombre, apellido, telefono, correo, direccion) 
                           VALUES (?, ?, ?, ?, ?, ?)''', (rut_id, nombre, apellido, telefono, correo, direccion))
-        cursor.execute('''INSERT INTO cliente (rut_id, altura) 
+        cursor.execute('''INSERT INTO clientes (rut_id, altura) 
                           VALUES (?, ?)''', (rut_id, altura))
 
         conn.commit()
         print(f'Cliente {nombre} {apellido} agregado exitosamente.')
-
-        return rut_id
     
     except sqlite3.Error as e:
         print("Error al insertar el cliente:", e)
     
     finally:
-        conn.close()
+        conn.commit()
+    
+    return rut_id
 
 def agregar_cliente_csv():
     import csv

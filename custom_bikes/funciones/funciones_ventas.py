@@ -156,11 +156,13 @@ def agregar_venta_cliente_nuevo():
     fecha_inicio_pedido = datetime.date.today()
     fecha_entrega_pedido = fecha_inicio_pedido + datetime.timedelta(days=30)
     id_pago = generar_codigo_transaccion(longitud=8)
+    
+    precio_final = total_precio
 
     cursor.execute('''INSERT INTO pedido (id_pedido, fecha_inicio_pedido, cliente, fecha_entrega_pedido) VALUES (?, ?, ?, ?)''', (pedido_id, fecha_inicio_pedido, rut_id, fecha_entrega_pedido))
-    cursor.execute('''INSERT INTO cotizacion (id_pedido, total_precio) VALUES (?, ?)''', (pedido_id, total_precio))
-    cursor.execute('''INSERT INTO bicicleta (id_pedido, precio) VALUES (?, ?)''', (pedido_id, precio_final))
+    cursor.execute('''INSERT INTO cotizacion (id_pedido, calculo_precio) VALUES (?, ?)''', (pedido_id, total_precio))
 
+    codigo_descuento = 0
     codigo_descuento = input("Ingrese el código de descuento (si no tiene, presione Enter): ")
     if codigo_descuento:
         cursor.execute('''SELECT porcentaje FROM codigos_descuentos WHERE codigo = ?''', (codigo_descuento,))
@@ -172,11 +174,14 @@ def agregar_venta_cliente_nuevo():
         else:
             print("Código de descuento no válido.")
             precio_final = total_precio
+    else:
+        precio_final = total_precio
+        descuento_porcentaje = 0
 
+    cursor.execute('''INSERT INTO bicicleta (id_pedido, precio) VALUES (?, ?)''', (pedido_id, precio_final))
     cursor.execute('''INSERT INTO boleta (id_pedido, precio_final, id_pago) VALUES (?, ?, ?)''', (pedido_id, precio_final, id_pago))
-    cursor.execute('''INSERT INTO transaciones (id_pago, monto_pagado) VALUES (?, ?)''', (id_pago, precio_final))
-
-    cursor.execute('''INSERT INTO historico_pedido (id_pedido, fecha_entrega_pedido) VALUES (?, ?)''', (pedido_id, fecha_entrega_pedido))
+    cursor.execute('''INSERT INTO transacciones (id_pago, monto_pagado) VALUES (?, ?)''', (id_pago, precio_final))
+    cursor.execute('''INSERT INTO historico_pedidos (id_pedido, fecha_entrega_pedido) VALUES (?, ?)''', (pedido_id, fecha_entrega_pedido))
     cursor.execute('''INSERT INTO garantia (id_pedido, fecha_inicio, fecha_fin, cobertura, condiciones, estado) VALUES (?, ?, ?, ?, ?, ?)''', (pedido_id, fecha_inicio_pedido, fecha_entrega_pedido, 'Cobertura por defecto', 'Condiciones por defecto', 'En proceso'))
 
     conn.commit()
@@ -195,6 +200,8 @@ def agregar_venta_cliente_existente():
     fecha_inicio_pedido = datetime.date.today()
     fecha_entrega_pedido = fecha_inicio_pedido + datetime.timedelta(days=30)
     id_pago = generar_codigo_transaccion(longitud=8)
+    
+    precio_final = total_precio
 
     cursor.execute('''INSERT INTO pedido (id_pedido, fecha_inicio_pedido, cliente, fecha_entrega_pedido) VALUES (?, ?, ?, ?)''', (pedido_id, fecha_inicio_pedido, rut_id, fecha_entrega_pedido))
     cursor.execute('''INSERT INTO cotizacion (id_pedido, calculo_precio) VALUES (?, ?)''', (pedido_id, total_precio))
@@ -209,12 +216,14 @@ def agregar_venta_cliente_existente():
             cursor.execute('''INSERT INTO cotizacion_codigo (id_pedido, codigo_seleccionado) VALUES (?, ?)''', (pedido_id, codigo_descuento))
         else:
             print("Código de descuento no válido.")
-            precio_final = total_precio
+    else: 
+        precio_final = total_precio
+        descuento_porcentaje = 0
 
     cursor.execute('''INSERT INTO bicicleta (id_pedido, precio) VALUES (?, ?)''', (pedido_id, precio_final))
     cursor.execute('''INSERT INTO boleta (id_pedido, precio_final, id_pago) VALUES (?, ?, ?)''', (pedido_id, precio_final, id_pago))
-    cursor.execute('''INSERT INTO transaciones (id_pago, monto_pagado) VALUES (?, ?)''', (id_pago, precio_final))
-    cursor.execute('''INSERT INTO historico_pedido (id_pedido, fecha_entrega_pedido) VALUES (?, ?)''', (pedido_id, fecha_entrega_pedido))
+    cursor.execute('''INSERT INTO transacciones (id_pago, monto_pagado) VALUES (?, ?)''', (id_pago, precio_final))
+    cursor.execute('''INSERT INTO historico_pedidos (id_pedido, fecha_entrega_pedido) VALUES (?, ?)''', (pedido_id, fecha_entrega_pedido))
     cursor.execute('''INSERT INTO garantia (id_pedido, fecha_inicio, fecha_fin, cobertura, condiciones, estado) VALUES (?, ?, ?, ?, ?, ?)''', (pedido_id, fecha_inicio_pedido, fecha_entrega_pedido, 'Cobertura por defecto', 'Condiciones por defecto', 'En proceso'))
 
     conn.commit()
@@ -274,7 +283,7 @@ def seleccionar_componentes(id_pedido):
 
                 if 1 <= seleccion_componente <= len(resultados):
                     componente_seleccionado = resultados[seleccion_componente - 1]
-                    componentes_seleccionados[sku] = componente_seleccionado[0]  # Almacena el SKU del componente
+                    componentes_seleccionados[sku] = componente_seleccionado[0]  
                     print(f'\nComponente seleccionado para {tipo}: {componente_seleccionado[1]}')
                     break
                 else:
@@ -370,17 +379,18 @@ def eliminar_venta(pedido_id_seleccionado):
     cursor = conn.cursor()
 
     try:
-        cursor.execute('''DELETE FROM garantia WHERE id_pedido = ?''', (pedido_id,))
-        cursor.execute('''DELETE FROM historico_pedido WHERE id_pedido = ?''', (pedido_id,))
-        cursor.execute('''DELETE FROM transacciones WHERE id_pago = (SELECT id_pago FROM boleta WHERE id_pedido = ?)''', (pedido_id,))
-        cursor.execute('''DELETE FROM boleta WHERE id_pedido = ?''', (pedido_id,))
-        cursor.execute('''DELETE FROM cotizacion_codigo WHERE id_pedido = ?''', (pedido_id,))
-        cursor.execute('''DELETE FROM cotizacion WHERE id_pedido = ?''', (pedido_id,))
-        cursor.execute('''DELETE FROM bicicleta WHERE id_pedido = ?''', (pedido_id,))
-        cursor.execute('''DELETE FROM pedido WHERE id_pedido = ?''', (pedido_id,))
+        cursor.execute('''DELETE FROM garantia WHERE id_pedido = ?''', (pedido_id_seleccionado,))
+        cursor.execute('''DELETE FROM historico_pedidos WHERE id_pedido = ?''', (pedido_id_seleccionado,))
+        cursor.execute('''DELETE FROM transacciones WHERE id_pago = (SELECT id_pago FROM boleta WHERE id_pedido = ?)''', (pedido_id_seleccionado,))
+        cursor.execute('''DELETE FROM boleta WHERE id_pedido = ?''', (pedido_id_seleccionado,))
+        cursor.execute('''DELETE FROM cotizacion_codigo WHERE id_pedido = ?''', (pedido_id_seleccionado,))
+        cursor.execute('''DELETE FROM cotizacion WHERE id_pedido = ?''', (pedido_id_seleccionado,))
+        cursor.execute('''DELETE FROM bicicleta WHERE id_pedido = ?''', (pedido_id_seleccionado,))
+        cursor.execute('''DELETE FROM pedido WHERE id_pedido = ?''', (pedido_id_seleccionado,))
+        cursor.execute('''DELETE FROM componentes WHERE id_pedido = ?''', (pedido_id_seleccionado, ))
 
         conn.commit()
-        print(f"Venta con ID {pedido_id} eliminada exitosamente.")
+        print(f"Venta con ID {pedido_id_seleccionado} eliminada exitosamente.")
     except sqlite3.Error as e:
         print(f"Error al eliminar la venta: {e}")
         conn.rollback()
@@ -460,15 +470,13 @@ def buscar_venta(pedido_id_seleccionado):
     cursor = conn.cursor()
 
     try:
-        # Consultamos los detalles de un pedido específico
         cursor.execute('''
             SELECT p.id_pedido, p.fecha_inicio_pedido, p.cliente, p.fecha_entrega_pedido, 
-                   c.total_precio, b.precio, t.monto_pagado, h.fecha_entrega_pedido, g.estado
+                   c.calculo_precio, b.precio, h.fecha_entrega_pedido, g.estado
             FROM pedido p
             JOIN cotizacion c ON p.id_pedido = c.id_pedido
             JOIN bicicleta b ON p.id_pedido = b.id_pedido
-            JOIN transaciones t ON p.id_pedido = t.id_pago
-            JOIN historico_pedido h ON p.id_pedido = h.id_pedido
+            JOIN historico_pedidos h ON p.id_pedido = h.id_pedido
             JOIN garantia g ON p.id_pedido = g.id_pedido
             WHERE p.id_pedido = ?
         ''', (pedido_id_seleccionado,))
@@ -476,7 +484,6 @@ def buscar_venta(pedido_id_seleccionado):
         pedido = cursor.fetchone()
 
         if pedido:
-            # Mostrar los resultados
             print(f"{'ID Pedido':<20}{'Fecha Inicio':<15}{'Cliente':<20}{'Fecha Entrega':<15}{'Total Precio':<15}{'Precio Final':<15}{'Monto Pagado':<15}{'Fecha Entrega Hist':<20}{'Estado Garantía':<15}")
             print("="*120)
 
@@ -498,24 +505,25 @@ def mostrar_ventas():
     try:
         cursor.execute('''
             SELECT p.id_pedido, p.fecha_inicio_pedido, p.cliente, p.fecha_entrega_pedido, 
-                   c.total_precio, b.precio, t.monto_pagado, h.fecha_entrega_pedido, g.estado
+                   c.calculo_precio, b.precio, h.fecha_entrega_pedido, g.estado
             FROM pedido p
-            JOIN cotizacion c ON p.id_pedido = c.id_pedido
-            JOIN bicicleta b ON p.id_pedido = b.id_pedido
-            JOIN transaciones t ON p.id_pedido = t.id_pago
-            JOIN historico_pedido h ON p.id_pedido = h.id_pedido
-            JOIN garantia g ON p.id_pedido = g.id_pedido
+            LEFT JOIN cotizacion c ON p.id_pedido = c.id_pedido
+            LEFT JOIN bicicleta b ON p.id_pedido = b.id_pedido
+            LEFT JOIN historico_pedidos h ON p.id_pedido = h.id_pedido
+            LEFT JOIN garantia g ON p.id_pedido = g.id_pedido;
         ''')
-        
+
         pedidos = cursor.fetchall()
 
         if pedidos:
             print(f"{'ID Pedido':<20}{'Fecha Inicio':<15}{'Cliente':<20}{'Fecha Entrega':<15}{'Total Precio':<15}{'Precio Final':<15}{'Monto Pagado':<15}{'Fecha Entrega Hist':<20}{'Estado Garantía':<15}")
-            print("="*120)
+            print("="*200)
 
             for pedido in pedidos:
-                print(f"{pedido[0]:<20}{pedido[1]:<15}{pedido[2]:<20}{pedido[3]:<15}{pedido[4]:<15}{pedido[5]:<15}{pedido[6]:<15}{pedido[7]:<20}{pedido[8]:<15}")
-        
+                pedido_formateado = [
+                    str(valor) if valor is not None else "N/A" for valor in pedido
+                ]
+                print(f"{pedido_formateado[0]:<20}{pedido_formateado[1]:<15}{pedido_formateado[2]:<20}{pedido_formateado[3]:<15}{pedido_formateado[4]:<15}{pedido_formateado[5]:<15}{pedido_formateado[6]:<15}{pedido_formateado[7]:<20}")
         else:
             print("No hay pedidos registrados.")
 

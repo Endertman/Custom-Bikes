@@ -31,7 +31,7 @@ def menu_ventas():
         elif seleccion == 4:
             print('Buscar venta')
             pedido_id_seleccionado = input("Ingrese el ID del pedido a buscar: ")
-            buscar_venta()
+            buscar_venta(pedido_id_seleccionado)
 
         elif seleccion == 5:
             print('Mostrar ventas')
@@ -70,14 +70,12 @@ def agregar_venta():
 
                 print('Cliente nuevo')
                 agregar_venta_cliente_nuevo()
-                
                 break
 
             elif seleccion_cliente == 2:
 
                 print('Cliente existente')
                 agregar_venta_cliente_existente()
-
                 break
         
             else:

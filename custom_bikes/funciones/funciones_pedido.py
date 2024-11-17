@@ -7,9 +7,7 @@ def id_pedido(rut_id):
 
     cursor.execute('''SELECT 1 FROM clientes WHERE rut_id = ?''', (rut_id,))
     if not cursor.fetchone():
-        print("Cliente no encontrado.")
-        conn.close()
-        return None
+        numero_pedidos = 1
 
     cursor.execute('''SELECT COUNT(*) FROM pedido WHERE cliente LIKE ?''', (f'{rut_id}%',))
     numero_pedidos = cursor.fetchone()[0] + 1
