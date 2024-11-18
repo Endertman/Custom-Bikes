@@ -165,11 +165,9 @@ def analisis_categoria_producto(productos_seleccionados):
             for producto, cantidad in conteos.items():
                 print(f"{producto:<20}{cantidad:<10}")
             
-            # Preparar los datos para el gráfico
             productos = list(conteos.keys())
             cantidades = list(conteos.values())
 
-            # Crear el gráfico
             plt.figure(figsize=(10, 6))
             plt.bar(productos, cantidades, color='skyblue', edgecolor='black')
             plt.title('Clientes Bike')

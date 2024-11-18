@@ -93,7 +93,7 @@ def agregar_productos_csv():
     conn = sqlite3.connect('custom_bikes/custom_bikes.db')
     cursor = conn.cursor()
 
-    with open(ruta_csv_stock, 'r') as file:
+    with open(ruta_csv_stock, 'r', encoding='utf-8') as file:
         next(file)
         for line in file:
             data = line.strip().split(',')

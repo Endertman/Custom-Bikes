@@ -10,7 +10,7 @@ def agregar_empleados_csv():
     conn = sqlite3.connect('custom_bikes/custom_bikes.db')
     cursor = conn.cursor()
 
-    with open(ruta_csv_personas, 'r') as file:
+    with open(ruta_csv_personas, 'r', encoding='utf-8') as file:
         reader = csv.reader(file)
         next(reader)  
 
@@ -32,7 +32,7 @@ def agregar_empleados_csv():
             except sqlite3.Error as e:
                 print("Error al insertar la persona", e)
 
-    with open(ruta_csv_tecnicos, 'r') as file:
+    with open(ruta_csv_tecnicos, 'r', encoding='utf-8') as file:
         reader = csv.reader(file)
         next(reader)
 

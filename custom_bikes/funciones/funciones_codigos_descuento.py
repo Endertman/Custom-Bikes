@@ -27,7 +27,7 @@ def insert_codigos_csv():
     conn = sqlite3.connect('custom_bikes/custom_bikes.db')
     cursor = conn.cursor()
 
-    with open(ruta_csv_codigos, 'r') as file:
+    with open(ruta_csv_codigos, 'r', encoding='utf-8') as file:
         reader = csv.reader(file)
         next(reader)  
 

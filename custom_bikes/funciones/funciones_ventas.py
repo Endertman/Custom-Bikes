@@ -17,7 +17,7 @@ def agregar_venta_csv():
     cursor = conn.cursor()
 
     try:
-        with open(ruta_csv_pedidos, 'r') as pedidos_file:
+        with open(ruta_csv_pedidos, 'r', encoding='utf-8') as pedidos_file:
             pedidos_reader = csv.reader(pedidos_file)
             next(pedidos_reader)
 
@@ -43,7 +43,7 @@ def agregar_venta_csv():
                     conn.commit()
                     print(f"Pedido {pedido_id} agregado correctamente.")
 
-                    with open(ruta_csv_tecnico_pedido, 'r') as tecnico_pedido_file:
+                    with open(ruta_csv_tecnico_pedido, 'r', encoding='utf-8') as tecnico_pedido_file:
                         tecnico_pedido_reader = csv.reader(tecnico_pedido_file)
                         next(tecnico_pedido_reader)
 
@@ -57,7 +57,7 @@ def agregar_venta_csv():
                                 break 
 
                     total_precio = 0
-                    with open(ruta_csv_lista_componentes, 'r') as componentes_file:
+                    with open(ruta_csv_lista_componentes, 'r', encoding='utf-8') as componentes_file:
                         componentes_reader = csv.reader(componentes_file)
                         next(componentes_reader)
 
@@ -72,7 +72,7 @@ def agregar_venta_csv():
                                 conn.commit()
                                 break 
 
-                    with open(ruta_csv_cotizacion_codigo, 'r') as cotizacion_codigo_file:
+                    with open(ruta_csv_cotizacion_codigo, 'r', encoding='utf-8') as cotizacion_codigo_file:
                         cotizacion_codigo_reader = csv.reader(cotizacion_codigo_file)
                         next(cotizacion_codigo_reader)
 
@@ -99,7 +99,7 @@ def agregar_venta_csv():
                                 conn.commit()
                                 break  
 
-                    with open(ruta_csv_historico_pedidos, 'r') as historico_pedido_file:
+                    with open(ruta_csv_historico_pedidos, 'r', encoding='utf-8') as historico_pedido_file:
                         historico_pedido_reader = csv.reader(historico_pedido_file)
                         next(historico_pedido_reader)
 
@@ -111,7 +111,7 @@ def agregar_venta_csv():
                                 conn.commit()
                                 break 
 
-                    with open(ruta_csv_garantia_respaldo, 'r') as garantia_file:
+                    with open(ruta_csv_garantia_respaldo, 'r', encoding='utf-8') as garantia_file:
                         garantia_reader = csv.reader(garantia_file)
                         next(garantia_reader)
 
